@@ -10,6 +10,9 @@ public static class CoreServiceExtensions
   {
     services.AddFrameworkCore();
 
+    Fossa.Licensing.ServiceCollectionExtensions.AddLicense(services);
+    VerdantApp.Licensing.ServiceCollectionExtensions.AddLicense(services);
+
     return services;
   }
 }
