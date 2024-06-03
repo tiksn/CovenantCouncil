@@ -7,7 +7,7 @@
     <PackageVersion Include="MediatR" Version="12.2.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
-    <PackageVersion Include="ReportGenerator" Version="5.3.4" />
+    <PackageVersion Include="ReportGenerator" Version="5.3.5" />
     <PackageVersion Include="TIKSN-Framework" Version="5.1.1" />
     <PackageVersion Include="VerdantApp.Licensing" Version="1.0.3" />
     <PackageVersion Include="xunit" Version="2.8.1" />
