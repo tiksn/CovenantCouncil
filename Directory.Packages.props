@@ -1,7 +1,7 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="coverlet.collector" Version="6.0.3" />
-    <PackageVersion Include="EasyDoubles" Version="1.1.14" />
+    <PackageVersion Include="EasyDoubles" Version="1.1.15" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0" />
     <PackageVersion Include="Fossa.Licensing" Version="1.1.11" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
