@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageVersion Include="coverlet.collector" Version="6.0.3" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="EasyDoubles" Version="1.1.15" />
     <PackageVersion Include="FluentAssertions" Version="8.0.0" />
     <PackageVersion Include="Fossa.Licensing" Version="1.1.11" />
