@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="EasyDoubles" Version="1.1.15" />
-    <PackageVersion Include="FluentAssertions" Version="8.0.1" />
+    <PackageVersion Include="FluentAssertions" Version="8.1.0" />
     <PackageVersion Include="Fossa.Licensing" Version="1.1.13" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
