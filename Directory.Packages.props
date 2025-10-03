@@ -4,7 +4,7 @@
     <PackageVersion Include="EasyDoubles" Version="1.1.16" />
     <PackageVersion Include="Fossa.Licensing" Version="1.2.0" />
     <PackageVersion Include="MediatR" Version="13.0.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="ReportGenerator" Version="5.4.16" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
