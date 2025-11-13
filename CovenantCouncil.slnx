@@ -1,0 +1,25 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CleanArchitecture.nuspec" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/CovenantCouncil.Core/CovenantCouncil.Core.csproj" />
+    <Project Path="src/CovenantCouncil.Infrastructure/CovenantCouncil.Infrastructure.csproj" />
+    <Project Path="src/CovenantCouncil.UseCases/CovenantCouncil.UseCases.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CovenantCouncil.FunctionalTests/CovenantCouncil.FunctionalTests.csproj" />
+    <Project Path="tests/CovenantCouncil.IntegrationTests/CovenantCouncil.IntegrationTests.csproj">
+      <BuildDependency Project="src/CovenantCouncil.Infrastructure/CovenantCouncil.Infrastructure.csproj" />
+    </Project>
+    <Project Path="tests/CovenantCouncil.UnitTests/CovenantCouncil.UnitTests.csproj" />
+  </Folder>
+</Solution>
