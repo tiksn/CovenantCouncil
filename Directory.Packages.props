@@ -1,7 +1,7 @@
 <Project>
   <ItemGroup>
     <PackageVersion Include="coverlet.collector" Version="10.0.0" />
-    <PackageVersion Include="EasyDoubles" Version="1.1.18" />
+    <PackageVersion Include="EasyDoubles" Version="1.1.19" />
     <PackageVersion Include="Fossa.Licensing" Version="1.2.2" />
     <PackageVersion Include="MediatR" Version="14.1.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
