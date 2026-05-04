@@ -46,6 +46,7 @@ public static class MauiProgram
     builder.Services.AddTransient<AddPartyPage>();
     builder.Services.AddTransient<CertificatesPage>();
     builder.Services.AddTransient<LicensesPage>();
+    builder.Services.AddTransient<IssueLicensePage>();
 
     var otlpEndpoint = Environment.GetEnvironmentVariable("COVENANTCOUNCIL_OTLP_ENDPOINT");
     if (!string.IsNullOrWhiteSpace(otlpEndpoint))

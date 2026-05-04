@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CovenantCouncil.App.Views.IssueLicensePage"
+             Title="Issue License">
+  <Grid Padding="24" RowDefinitions="Auto,*,Auto" RowSpacing="16">
+    <Label Text="Issue License" FontSize="24" FontAttributes="Bold" />
+
+    <ScrollView Grid.Row="1">
+      <VerticalStackLayout Spacing="12" MaximumWidthRequest="820">
+        <Label Text="Descriptor" TextColor="{StaticResource TextSecondary}" />
+        <Picker ItemsSource="{Binding Descriptors}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedDescriptor}" />
+
+        <Label Text="Serial number" TextColor="{StaticResource TextSecondary}" />
+        <Entry Text="{Binding SerialNumber}" IsReadOnly="True" />
+
+        <Label Text="Licensor" TextColor="{StaticResource TextSecondary}" />
+        <Picker ItemsSource="{Binding Parties}"
+                ItemDisplayBinding="{Binding DisplayName}"
+                SelectedItem="{Binding SelectedLicensor}" />
+
+        <Label Text="Licensee" TextColor="{StaticResource TextSecondary}" />
+        <Picker ItemsSource="{Binding Parties}"
+                ItemDisplayBinding="{Binding DisplayName}"
+                SelectedItem="{Binding SelectedLicensee}" />
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+          <VerticalStackLayout Spacing="8">
+            <Label Text="Not before date" TextColor="{StaticResource TextSecondary}" />
+            <DatePicker Date="{Binding NotBeforeDate}" />
+            <Label Text="Not before time" TextColor="{StaticResource TextSecondary}" />
+            <TimePicker Time="{Binding NotBeforeTime}" />
+          </VerticalStackLayout>
+          <VerticalStackLayout Grid.Column="1" Spacing="8">
+            <Label Text="Not after date" TextColor="{StaticResource TextSecondary}" />
+            <DatePicker Date="{Binding NotAfterDate}" />
+            <Label Text="Not after time" TextColor="{StaticResource TextSecondary}" />
+            <TimePicker Time="{Binding NotAfterTime}" />
+          </VerticalStackLayout>
+        </Grid>
+
+        <Label Text="PFX certificate" TextColor="{StaticResource TextSecondary}" />
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+          <Entry Text="{Binding PfxPath}" IsReadOnly="True" />
+          <Button Grid.Column="1" Text="Pick PFX" Clicked="PickPfxClicked" />
+        </Grid>
+
+        <Label Text="PFX password" TextColor="{StaticResource TextSecondary}" />
+        <Entry IsPassword="True" Text="{Binding PfxPassword}" />
+
+        <Label Text="System ID" TextColor="{StaticResource TextSecondary}" />
+        <Entry Text="{Binding SystemId}" />
+
+        <VerticalStackLayout Spacing="12" IsVisible="{Binding RequiresEnvironmentName}">
+          <Label Text="Environment name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding EnvironmentName}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="12" IsVisible="{Binding IsFossaCompany}">
+          <Label Text="Company ID" TextColor="{StaticResource TextSecondary}" />
+          <Entry Keyboard="Numeric" Text="{Binding CompanyId}" />
+          <Label Text="Maximum branch count" TextColor="{StaticResource TextSecondary}" />
+          <Entry Keyboard="Numeric" Text="{Binding MaximumBranchCount}" />
+          <Label Text="Maximum employee count" TextColor="{StaticResource TextSecondary}" />
+          <Entry Keyboard="Numeric" Text="{Binding MaximumEmployeeCount}" />
+          <Label Text="Maximum department count" TextColor="{StaticResource TextSecondary}" />
+          <Entry Keyboard="Numeric" Text="{Binding MaximumDepartmentCount}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="12" IsVisible="{Binding IsFossaSystem}">
+          <Label Text="Maximum company count" TextColor="{StaticResource TextSecondary}" />
+          <Entry Keyboard="Numeric" Text="{Binding MaximumCompanyCount}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="8" IsVisible="{Binding RequiresCountries}">
+          <Label Text="Countries" TextColor="{StaticResource TextSecondary}" />
+          <Label Text="{Binding SelectedCountriesSummary}"
+                 TextColor="{StaticResource Gold}"
+                 FontAttributes="Bold" />
+          <Border Stroke="{StaticResource PanelBackground}" Padding="8">
+            <ScrollView HeightRequest="260">
+              <VerticalStackLayout BindableLayout.ItemsSource="{Binding Countries}">
+                <BindableLayout.ItemTemplate>
+                  <DataTemplate>
+                    <Grid Padding="4" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                      <CheckBox IsChecked="{Binding IsSelected}" />
+                      <Label Grid.Column="1"
+                             Text="{Binding DisplayName}"
+                             VerticalOptions="Center" />
+                      <Label Grid.Column="2"
+                             Text="{Binding SelectionStateText}"
+                             TextColor="{StaticResource Gold}"
+                             FontAttributes="Bold"
+                             VerticalOptions="Center" />
+                    </Grid>
+                  </DataTemplate>
+                </BindableLayout.ItemTemplate>
+              </VerticalStackLayout>
+            </ScrollView>
+          </Border>
+        </VerticalStackLayout>
+      </VerticalStackLayout>
+    </ScrollView>
+
+    <HorizontalStackLayout Grid.Row="2" Spacing="10" HorizontalOptions="End">
+      <Button Text="Cancel" Clicked="CancelClicked" />
+      <Button Text="Issue" Clicked="IssueClicked" />
+    </HorizontalStackLayout>
+
+    <Grid Grid.RowSpan="3"
+          BackgroundColor="#80000000"
+          IsVisible="{Binding IsBusy}">
+      <ActivityIndicator IsRunning="{Binding IsBusy}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+    </Grid>
+  </Grid>
+</ContentPage>

@@ -16,6 +16,7 @@ public static class ViewModelServiceExtensions
     services.AddTransient<AddPartyViewModel>();
     services.AddTransient<CertificatesViewModel>();
     services.AddTransient<LicensesViewModel>();
+    services.AddTransient<IssueLicenseViewModel>();
     return services;
   }
 }

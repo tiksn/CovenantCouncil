@@ -9,6 +9,7 @@ public sealed class LicensesViewModel : ViewModelBase
 {
   private readonly ILicenseCatalog licenseCatalog;
   private readonly ILicenseService licenseService;
+  private bool isLoading;
   private LicenseDescriptorSummary? selectedDescriptor;
 
   public LicensesViewModel(ILicenseCatalog licenseCatalog, ILicenseService licenseService)
@@ -36,8 +37,20 @@ public sealed class LicensesViewModel : ViewModelBase
     get => selectedDescriptor;
     set
     {
+      var changed = !EqualityComparer<LicenseDescriptorSummary?>.Default.Equals(selectedDescriptor, value);
       this.RaiseAndSetIfChanged(ref selectedDescriptor, value);
-      _ = Load.Execute().Subscribe(_ => { }, HandleException);
+      if (changed && !isLoading)
+      {
+        _ = LoadLicensesAsync().ContinueWith(
+          task =>
+          {
+            if (task.Exception is not null)
+            {
+              HandleException(task.Exception.GetBaseException());
+            }
+          },
+          TaskScheduler.Default);
+      }
     }
   }
 
@@ -53,12 +66,25 @@ public sealed class LicensesViewModel : ViewModelBase
 
   private async Task LoadAsync()
   {
-    Descriptors.Clear();
-    foreach (var descriptor in licenseCatalog.GetDescriptors())
+    isLoading = true;
+    try
     {
-      Descriptors.Add(descriptor);
-    }
+      Descriptors.Clear();
+      foreach (var descriptor in licenseCatalog.GetDescriptors())
+      {
+        Descriptors.Add(descriptor);
+      }
 
+      await LoadLicensesAsync();
+    }
+    finally
+    {
+      isLoading = false;
+    }
+  }
+
+  private async Task LoadLicensesAsync()
+  {
     Licenses.Clear();
     foreach (var license in await licenseService.ListAsync(SelectedDescriptor?.Discriminator))
     {
@@ -69,12 +95,12 @@ public sealed class LicensesViewModel : ViewModelBase
   private async Task IssueAsync(IssueLicenseRequest request)
   {
     await licenseService.IssueAsync(request);
-    await LoadAsync();
+    await LoadLicensesAsync();
   }
 
   private async Task DeleteAsync(Guid id)
   {
     await licenseService.DeleteAsync(id);
-    await LoadAsync();
+    await LoadLicensesAsync();
   }
 }

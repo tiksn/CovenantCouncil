@@ -18,3 +18,14 @@ public sealed record UpsertParty(
   string? FullName,
   string? ShortName,
   string? LongName);
+
+public sealed record PartyDetail(
+  Guid Id,
+  PartyKind Kind,
+  string? Email,
+  string? Website,
+  string? FirstName,
+  string? LastName,
+  string? FullName,
+  string? ShortName,
+  string? LongName);

@@ -66,6 +66,25 @@ public sealed class PartyService(IDbContextFactory<CovenantCouncilDbContext> dbC
     return id;
   }
 
+  public async Task<PartyDetail> GetAsync(Guid id, CancellationToken cancellationToken = default)
+  {
+    await using var db = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+    return await db.Parties
+      .AsNoTracking()
+      .Where(p => p.Id == id)
+      .Select(p => new PartyDetail(
+        p.Id,
+        p.Kind,
+        p.Email,
+        p.Website,
+        p.FirstName,
+        p.LastName,
+        p.FullName,
+        p.ShortName,
+        p.LongName))
+      .SingleAsync(cancellationToken);
+  }
+
   public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
   {
     await using var db = await dbContextFactory.CreateDbContextAsync(cancellationToken);

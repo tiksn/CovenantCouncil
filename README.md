@@ -32,6 +32,12 @@ Sensitive license payloads are encrypted before persistence. PFX passwords are n
 - Manage public certificates as a certificate tree.
 - Block certificate import unless the full issuer chain is supplied.
 - Convert selected PFX files to public certificate records when issuing a license.
+- Issue signed licenses from PFX certificates using TIKSN `LicenseFactory`.
+- Generate license serial numbers automatically and show them as read-only during issuing.
+- Select licensor and licensee parties from the opened database.
+- Enter required not-before and not-after validity dates.
+- Enter descriptor-specific entitlements for Fossa company, Fossa system, and VerdantApp system licenses.
+- Select supported countries from a multi-select country list for system licenses.
 - List immutable issued licenses with descriptor filtering.
 - Discover license descriptors through compile-time service registration.
 - Configure OpenTelemetry through the `COVENANTCOUNCIL_OTLP_ENDPOINT` environment variable.
