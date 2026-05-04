@@ -26,6 +26,25 @@ public sealed class PartyService(IDbContextFactory<CovenantCouncilDbContext> dbC
   public async Task<Guid> SaveAsync(UpsertParty party, CancellationToken cancellationToken = default)
   {
     await using var db = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+    var normalizedParty = Normalize(party);
+    var existing = await db.Parties
+      .AsNoTracking()
+      .Where(p => p.Kind == normalizedParty.Kind
+        && p.Email == normalizedParty.Email
+        && p.Website == normalizedParty.Website
+        && p.FirstName == normalizedParty.FirstName
+        && p.LastName == normalizedParty.LastName
+        && p.FullName == normalizedParty.FullName
+        && p.ShortName == normalizedParty.ShortName
+        && p.LongName == normalizedParty.LongName)
+      .Select(p => (Guid?)p.Id)
+      .FirstOrDefaultAsync(cancellationToken);
+
+    if (existing is Guid existingId)
+    {
+      return existingId;
+    }
+
     var id = party.Id ?? Guid.NewGuid();
     var entity = party.Id is null ? null : await db.Parties.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     if (entity is null)
@@ -34,14 +53,14 @@ public sealed class PartyService(IDbContextFactory<CovenantCouncilDbContext> dbC
       db.Parties.Add(entity);
     }
 
-    entity.Kind = party.Kind;
-    entity.Email = party.Email;
-    entity.Website = party.Website;
-    entity.FirstName = party.FirstName;
-    entity.LastName = party.LastName;
-    entity.FullName = party.FullName;
-    entity.ShortName = party.ShortName;
-    entity.LongName = party.LongName;
+    entity.Kind = normalizedParty.Kind;
+    entity.Email = normalizedParty.Email;
+    entity.Website = normalizedParty.Website;
+    entity.FirstName = normalizedParty.FirstName;
+    entity.LastName = normalizedParty.LastName;
+    entity.FullName = normalizedParty.FullName;
+    entity.ShortName = normalizedParty.ShortName;
+    entity.LongName = normalizedParty.LongName;
 
     await db.SaveChangesAsync(cancellationToken);
     return id;
@@ -65,5 +84,25 @@ public sealed class PartyService(IDbContextFactory<CovenantCouncilDbContext> dbC
     return party.Kind == PartyKind.Individual
       ? party.FullName ?? $"{party.FirstName} {party.LastName}".Trim()
       : party.LongName ?? party.ShortName ?? "";
+  }
+
+  private static UpsertParty Normalize(UpsertParty party)
+  {
+    return party with
+    {
+      Email = NormalizeText(party.Email),
+      Website = NormalizeText(party.Website),
+      FirstName = NormalizeText(party.FirstName),
+      LastName = NormalizeText(party.LastName),
+      FullName = NormalizeText(party.FullName),
+      ShortName = NormalizeText(party.ShortName),
+      LongName = NormalizeText(party.LongName)
+    };
+  }
+
+  private static string? NormalizeText(string? value)
+  {
+    var normalized = value?.Trim();
+    return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
   }
 }

@@ -1,14 +1,18 @@
 using CovenantCouncil.App.Services;
 using CovenantCouncil.ViewModels.Parties;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reactive.Threading.Tasks;
 
 namespace CovenantCouncil.App.Views;
 
 public partial class PartiesPage : ContentPage
 {
-  public PartiesPage(PartiesViewModel viewModel)
+  private readonly IServiceProvider serviceProvider;
+
+  public PartiesPage(PartiesViewModel viewModel, IServiceProvider serviceProvider)
   {
     InitializeComponent();
+    this.serviceProvider = serviceProvider;
     BindingContext = viewModel;
     ViewModelErrorObserver.Observe(viewModel);
     Loaded += (_, _) => _ = LoadAsync(viewModel);
@@ -31,6 +35,61 @@ public partial class PartiesPage : ContentPage
     if (BindingContext is PartiesViewModel viewModel)
     {
       _ = LoadAsync(viewModel);
+    }
+  }
+
+  private void AddClicked(object? sender, EventArgs e)
+  {
+    _ = AddAsync();
+  }
+
+  private async Task AddAsync()
+  {
+    try
+    {
+      var page = serviceProvider.GetRequiredService<AddPartyPage>();
+      page.Saved += (_, _) =>
+      {
+        if (BindingContext is PartiesViewModel viewModel)
+        {
+          _ = LoadAsync(viewModel);
+        }
+      };
+      await Navigation.PushAsync(page);
+    }
+    catch (Exception ex)
+    {
+      AppErrorPresenter.Show(ex);
+    }
+  }
+
+  private void DeleteClicked(object? sender, EventArgs e)
+  {
+    _ = DeleteAsync(sender);
+  }
+
+  private async Task DeleteAsync(object? sender)
+  {
+    if (BindingContext is not PartiesViewModel viewModel ||
+        sender is not Button button ||
+        button.CommandParameter is not Guid id)
+    {
+      return;
+    }
+
+    try
+    {
+      var confirmed = await DisplayAlertAsync("Delete party", "Delete this party?", "Delete", "Cancel");
+      if (!confirmed)
+      {
+        return;
+      }
+
+      await viewModel.Delete.Execute(id).ToTask();
+    }
+    catch (Exception ex)
+    {
+      AppErrorPresenter.Show(ex);
     }
   }
 }

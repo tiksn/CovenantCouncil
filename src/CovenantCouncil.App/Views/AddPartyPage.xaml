@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CovenantCouncil.App.Views.AddPartyPage"
+             Title="Add Party">
+  <Grid Padding="24" RowDefinitions="Auto,*,Auto" RowSpacing="16">
+    <Label Text="Add Party" FontSize="24" FontAttributes="Bold" />
+
+    <ScrollView Grid.Row="1">
+      <VerticalStackLayout Spacing="12" MaximumWidthRequest="720">
+        <Label Text="Type" TextColor="{StaticResource TextSecondary}" />
+        <Picker ItemsSource="{Binding Kinds}" SelectedItem="{Binding Kind}" />
+
+        <Label Text="Email" TextColor="{StaticResource TextSecondary}" />
+        <Entry Keyboard="Email" Text="{Binding Email}" />
+
+        <Label Text="Website" TextColor="{StaticResource TextSecondary}" />
+        <Entry Keyboard="Url" Text="{Binding Website}" />
+
+        <VerticalStackLayout Spacing="12" IsVisible="{Binding IsIndividual}">
+          <Label Text="First name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding FirstName}" />
+          <Label Text="Last name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding LastName}" />
+          <Label Text="Full name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding FullName}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Spacing="12" IsVisible="{Binding IsOrganization}">
+          <Label Text="Short name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding ShortName}" />
+          <Label Text="Long name" TextColor="{StaticResource TextSecondary}" />
+          <Entry Text="{Binding LongName}" />
+        </VerticalStackLayout>
+      </VerticalStackLayout>
+    </ScrollView>
+
+    <HorizontalStackLayout Grid.Row="2" Spacing="10" HorizontalOptions="End">
+      <Button Text="Cancel" Clicked="CancelClicked" />
+      <Button Text="Save" Clicked="SaveClicked" />
+    </HorizontalStackLayout>
+
+    <Grid Grid.RowSpan="3"
+          BackgroundColor="#80000000"
+          IsVisible="{Binding IsBusy}">
+      <ActivityIndicator IsRunning="{Binding IsBusy}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+    </Grid>
+  </Grid>
+</ContentPage>

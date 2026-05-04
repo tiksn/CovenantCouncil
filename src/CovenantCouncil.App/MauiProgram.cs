@@ -43,6 +43,7 @@ public static class MauiProgram
     builder.Services.AddTransient<DatabaseGatePage>();
     builder.Services.AddTransient<SettingsPage>();
     builder.Services.AddTransient<PartiesPage>();
+    builder.Services.AddTransient<AddPartyPage>();
     builder.Services.AddTransient<CertificatesPage>();
     builder.Services.AddTransient<LicensesPage>();
 

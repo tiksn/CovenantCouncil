@@ -13,6 +13,7 @@ public static class ViewModelServiceExtensions
     services.AddTransient<DatabaseGateViewModel>();
     services.AddTransient<ApplicationSettingsViewModel>();
     services.AddTransient<PartiesViewModel>();
+    services.AddTransient<AddPartyViewModel>();
     services.AddTransient<CertificatesViewModel>();
     services.AddTransient<LicensesViewModel>();
     return services;

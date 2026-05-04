@@ -22,7 +22,13 @@ Sensitive license payloads are encrypted before persistence. PFX passwords are n
 
 ## Features
 
+- Open or create a portable `.ccdb` database, then unlock it with a password.
+- Keep the database gate as the only visible shell page until a database is loaded.
 - Manage parties in one list, filtered by individual or organization.
+- Add individual parties with email, website, first name, last name, and full name.
+- Add organization parties with email, website, short name, and long name.
+- Avoid duplicate party creation when every party field, including party kind, already matches an existing party.
+- Delete parties that do not have dependent licenses.
 - Manage public certificates as a certificate tree.
 - Block certificate import unless the full issuer chain is supplied.
 - Convert selected PFX files to public certificate records when issuing a license.

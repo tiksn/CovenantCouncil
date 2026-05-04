@@ -7,15 +7,17 @@
     <HorizontalStackLayout Spacing="12">
       <Label Text="Parties" FontSize="24" FontAttributes="Bold" VerticalOptions="Center" />
       <Picker Title="Type" ItemsSource="{Binding KindFilters}" SelectedItem="{Binding SelectedKind}" WidthRequest="220" />
+      <Button Text="Add" Clicked="AddClicked" />
       <Button Text="Refresh" Clicked="RefreshClicked" />
     </HorizontalStackLayout>
     <CollectionView Grid.Row="1" ItemsSource="{Binding Parties}">
       <CollectionView.ItemTemplate>
         <DataTemplate>
-          <Grid Padding="12" ColumnDefinitions="160,*,220" BackgroundColor="{StaticResource PanelBackground}" Margin="0,0,0,8">
+          <Grid Padding="12" ColumnDefinitions="160,*,220,Auto" BackgroundColor="{StaticResource PanelBackground}" Margin="0,0,0,8">
             <Label Text="{Binding Kind}" TextColor="{StaticResource Gold}" />
             <Label Grid.Column="1" Text="{Binding DisplayName}" FontAttributes="Bold" />
             <Label Grid.Column="2" Text="{Binding Email}" TextColor="{StaticResource TextSecondary}" />
+            <Button Grid.Column="3" Text="Delete" CommandParameter="{Binding Id}" Clicked="DeleteClicked" />
           </Grid>
         </DataTemplate>
       </CollectionView.ItemTemplate>
