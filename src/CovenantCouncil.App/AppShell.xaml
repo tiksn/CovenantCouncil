@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+  x:Class="CovenantCouncil.App.AppShell"
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:views="clr-namespace:CovenantCouncil.App.Views"
+  Shell.FlyoutBehavior="Flyout">
+  <ShellContent x:Name="DatabaseContent" Title="Database" ContentTemplate="{DataTemplate views:DatabaseGatePage}" Route="database" />
+  <ShellContent x:Name="PartiesContent" Title="Parties" ContentTemplate="{DataTemplate views:PartiesPage}" Route="parties" />
+  <ShellContent x:Name="CertificatesContent" Title="Certificates" ContentTemplate="{DataTemplate views:CertificatesPage}" Route="certificates" />
+  <ShellContent x:Name="LicensesContent" Title="Licenses" ContentTemplate="{DataTemplate views:LicensesPage}" Route="licenses" />
+</Shell>

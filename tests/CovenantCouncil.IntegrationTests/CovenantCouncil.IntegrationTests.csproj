@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CovenantCouncil.Infrastructure\CovenantCouncil.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\CovenantCouncil.ViewModels\CovenantCouncil.ViewModels.csproj" />
     <ProjectReference Include="..\CovenantCouncil.UnitTests\CovenantCouncil.UnitTests.csproj" />
   </ItemGroup>
 

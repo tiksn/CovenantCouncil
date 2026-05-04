@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+  <Color x:Key="PageBackground">#0B1020</Color>
+  <Color x:Key="PanelBackground">#121A2C</Color>
+  <Color x:Key="Accent">#69C7E8</Color>
+  <Color x:Key="Gold">#D7B56D</Color>
+  <Color x:Key="TextPrimary">#F6F8FB</Color>
+  <Color x:Key="TextSecondary">#AEB8C8</Color>
+</ResourceDictionary>

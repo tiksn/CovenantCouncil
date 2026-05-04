@@ -12,8 +12,10 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/CovenantCouncil.Core/CovenantCouncil.Core.csproj" />
+    <Project Path="src/CovenantCouncil.App/CovenantCouncil.App.csproj" />
     <Project Path="src/CovenantCouncil.Infrastructure/CovenantCouncil.Infrastructure.csproj" />
     <Project Path="src/CovenantCouncil.UseCases/CovenantCouncil.UseCases.csproj" />
+    <Project Path="src/CovenantCouncil.ViewModels/CovenantCouncil.ViewModels.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CovenantCouncil.FunctionalTests/CovenantCouncil.FunctionalTests.csproj" />
