@@ -1,15 +1,15 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace CovenantCouncil.App;
 
 public partial class App : Application
 {
-  private readonly AppShell shell;
+  private readonly AppShell _shell;
 
   public App(AppShell shell, Services.AppDiagnosticsService diagnostics, ILogger<App> logger)
   {
     InitializeComponent();
-    this.shell = shell;
+    _shell = shell;
     Services.AppDiagnostics.Current = diagnostics;
     logger.LogInformation("Covenant Council app started. LogFile={LogFile}", diagnostics.CurrentLogPath);
     foreach (var crashEntry in diagnostics.FindCrashEntries())
@@ -40,6 +40,6 @@ public partial class App : Application
 
   protected override Window CreateWindow(IActivationState? activationState)
   {
-    return new Window(shell);
+    return new Window(_shell);
   }
 }

@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Certificates;
+﻿namespace CovenantCouncil.UseCases.Certificates;
 
 public interface ICertificateService
 {

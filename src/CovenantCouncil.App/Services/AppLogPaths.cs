@@ -1,4 +1,4 @@
-namespace CovenantCouncil.App.Services;
+﻿namespace CovenantCouncil.App.Services;
 
 public static class AppLogPaths
 {

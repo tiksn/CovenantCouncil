@@ -1,4 +1,4 @@
-namespace CovenantCouncil.App;
+﻿namespace CovenantCouncil.App;
 
 public partial class AppShell : Shell
 {

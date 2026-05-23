@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using CovenantCouncil.UseCases.Certificates;
 using ReactiveUI;
@@ -7,11 +7,11 @@ namespace CovenantCouncil.ViewModels.Certificates;
 
 public sealed class CertificatesViewModel : ViewModelBase
 {
-  private readonly ICertificateService certificateService;
+  private readonly ICertificateService _certificateService;
 
   public CertificatesViewModel(ICertificateService certificateService)
   {
-    this.certificateService = certificateService;
+    _certificateService = certificateService;
     Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     ImportChain = ReactiveCommand.CreateFromTask<IReadOnlyList<string>>(ImportChainAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
@@ -31,7 +31,7 @@ public sealed class CertificatesViewModel : ViewModelBase
   private async Task LoadAsync()
   {
     Roots.Clear();
-    foreach (var root in await certificateService.GetTreeAsync())
+    foreach (var root in await _certificateService.GetTreeAsync())
     {
       Roots.Add(root);
     }
@@ -39,13 +39,13 @@ public sealed class CertificatesViewModel : ViewModelBase
 
   private async Task ImportChainAsync(IReadOnlyList<string> paths)
   {
-    await certificateService.ImportPublicChainAsync(paths);
+    await _certificateService.ImportPublicChainAsync(paths);
     await LoadAsync();
   }
 
   private async Task DeleteAsync(Guid id)
   {
-    await certificateService.DeleteAsync(id);
+    await _certificateService.DeleteAsync(id);
     await LoadAsync();
   }
 }

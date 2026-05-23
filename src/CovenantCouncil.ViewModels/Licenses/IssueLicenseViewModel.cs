@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reactive;
 using CovenantCouncil.UseCases.Licenses;
@@ -9,34 +9,34 @@ namespace CovenantCouncil.ViewModels.Licenses;
 
 public sealed class IssueLicenseViewModel : ViewModelBase
 {
-  private readonly ILicenseCatalog licenseCatalog;
-  private readonly ILicenseService licenseService;
-  private readonly IPartyService partyService;
-  private string companyId = "";
-  private string environmentName = "";
-  private string maximumBranchCount = "";
-  private string maximumCompanyCount = "";
-  private string maximumDepartmentCount = "";
-  private string maximumEmployeeCount = "";
-  private DateTime notAfterDate = DateTime.Today.AddYears(1);
-  private TimeSpan notAfterTime = TimeSpan.Zero;
-  private DateTime notBeforeDate = DateTime.Today;
-  private TimeSpan notBeforeTime = TimeSpan.Zero;
-  private string pfxPassword = "";
-  private string pfxPath = "";
-  private LicenseDescriptorSummary? selectedDescriptor;
-  private PartySummary? selectedLicensee;
-  private PartySummary? selectedLicensor;
-  private string systemId = "";
+  private readonly ILicenseCatalog _licenseCatalog;
+  private readonly ILicenseService _licenseService;
+  private readonly IPartyService _partyService;
+  private string _companyId = "";
+  private string _environmentName = "";
+  private string _maximumBranchCount = "";
+  private string _maximumCompanyCount = "";
+  private string _maximumDepartmentCount = "";
+  private string _maximumEmployeeCount = "";
+  private DateTime _notAfterDate = DateTime.Today.AddYears(1);
+  private TimeSpan _notAfterTime = TimeSpan.Zero;
+  private DateTime _notBeforeDate = DateTime.Today;
+  private TimeSpan _notBeforeTime = TimeSpan.Zero;
+  private string _pfxPassword = "";
+  private string _pfxPath = "";
+  private LicenseDescriptorSummary? _selectedDescriptor;
+  private PartySummary? _selectedLicensee;
+  private PartySummary? _selectedLicensor;
+  private string _systemId = "";
 
   public IssueLicenseViewModel(
     ILicenseCatalog licenseCatalog,
     ILicenseService licenseService,
     IPartyService partyService)
   {
-    this.licenseCatalog = licenseCatalog;
-    this.licenseService = licenseService;
-    this.partyService = partyService;
+    _licenseCatalog = licenseCatalog;
+    _licenseService = licenseService;
+    _partyService = partyService;
     Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Issue = ReactiveCommand.CreateFromTask(IssueAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     ObserveCommandErrors(Load);
@@ -57,10 +57,10 @@ public sealed class IssueLicenseViewModel : ViewModelBase
 
   public LicenseDescriptorSummary? SelectedDescriptor
   {
-    get => selectedDescriptor;
+    get => _selectedDescriptor;
     set
     {
-      this.RaiseAndSetIfChanged(ref selectedDescriptor, value);
+      this.RaiseAndSetIfChanged(ref _selectedDescriptor, value);
       this.RaisePropertyChanged(nameof(IsFossaCompany));
       this.RaisePropertyChanged(nameof(IsFossaSystem));
       this.RaisePropertyChanged(nameof(IsVerdantSystem));
@@ -71,92 +71,92 @@ public sealed class IssueLicenseViewModel : ViewModelBase
 
   public PartySummary? SelectedLicensor
   {
-    get => selectedLicensor;
-    set => this.RaiseAndSetIfChanged(ref selectedLicensor, value);
+    get => _selectedLicensor;
+    set => this.RaiseAndSetIfChanged(ref _selectedLicensor, value);
   }
 
   public PartySummary? SelectedLicensee
   {
-    get => selectedLicensee;
-    set => this.RaiseAndSetIfChanged(ref selectedLicensee, value);
+    get => _selectedLicensee;
+    set => this.RaiseAndSetIfChanged(ref _selectedLicensee, value);
   }
 
   public DateTime NotBeforeDate
   {
-    get => notBeforeDate;
-    set => this.RaiseAndSetIfChanged(ref notBeforeDate, value);
+    get => _notBeforeDate;
+    set => this.RaiseAndSetIfChanged(ref _notBeforeDate, value);
   }
 
   public TimeSpan NotBeforeTime
   {
-    get => notBeforeTime;
-    set => this.RaiseAndSetIfChanged(ref notBeforeTime, value);
+    get => _notBeforeTime;
+    set => this.RaiseAndSetIfChanged(ref _notBeforeTime, value);
   }
 
   public DateTime NotAfterDate
   {
-    get => notAfterDate;
-    set => this.RaiseAndSetIfChanged(ref notAfterDate, value);
+    get => _notAfterDate;
+    set => this.RaiseAndSetIfChanged(ref _notAfterDate, value);
   }
 
   public TimeSpan NotAfterTime
   {
-    get => notAfterTime;
-    set => this.RaiseAndSetIfChanged(ref notAfterTime, value);
+    get => _notAfterTime;
+    set => this.RaiseAndSetIfChanged(ref _notAfterTime, value);
   }
 
   public string PfxPath
   {
-    get => pfxPath;
-    set => this.RaiseAndSetIfChanged(ref pfxPath, value);
+    get => _pfxPath;
+    set => this.RaiseAndSetIfChanged(ref _pfxPath, value);
   }
 
   public string PfxPassword
   {
-    get => pfxPassword;
-    set => this.RaiseAndSetIfChanged(ref pfxPassword, value);
+    get => _pfxPassword;
+    set => this.RaiseAndSetIfChanged(ref _pfxPassword, value);
   }
 
   public string SystemId
   {
-    get => systemId;
-    set => this.RaiseAndSetIfChanged(ref systemId, value);
+    get => _systemId;
+    set => this.RaiseAndSetIfChanged(ref _systemId, value);
   }
 
   public string EnvironmentName
   {
-    get => environmentName;
-    set => this.RaiseAndSetIfChanged(ref environmentName, value);
+    get => _environmentName;
+    set => this.RaiseAndSetIfChanged(ref _environmentName, value);
   }
 
   public string CompanyId
   {
-    get => companyId;
-    set => this.RaiseAndSetIfChanged(ref companyId, value);
+    get => _companyId;
+    set => this.RaiseAndSetIfChanged(ref _companyId, value);
   }
 
   public string MaximumBranchCount
   {
-    get => maximumBranchCount;
-    set => this.RaiseAndSetIfChanged(ref maximumBranchCount, value);
+    get => _maximumBranchCount;
+    set => this.RaiseAndSetIfChanged(ref _maximumBranchCount, value);
   }
 
   public string MaximumEmployeeCount
   {
-    get => maximumEmployeeCount;
-    set => this.RaiseAndSetIfChanged(ref maximumEmployeeCount, value);
+    get => _maximumEmployeeCount;
+    set => this.RaiseAndSetIfChanged(ref _maximumEmployeeCount, value);
   }
 
   public string MaximumDepartmentCount
   {
-    get => maximumDepartmentCount;
-    set => this.RaiseAndSetIfChanged(ref maximumDepartmentCount, value);
+    get => _maximumDepartmentCount;
+    set => this.RaiseAndSetIfChanged(ref _maximumDepartmentCount, value);
   }
 
   public string MaximumCompanyCount
   {
-    get => maximumCompanyCount;
-    set => this.RaiseAndSetIfChanged(ref maximumCompanyCount, value);
+    get => _maximumCompanyCount;
+    set => this.RaiseAndSetIfChanged(ref _maximumCompanyCount, value);
   }
 
   public bool IsFossaCompany => SelectedDescriptor?.EntitlementKind == LicenseEntitlementKinds.FossaCompany;
@@ -195,7 +195,7 @@ public sealed class IssueLicenseViewModel : ViewModelBase
   private async Task LoadAsync()
   {
     Descriptors.Clear();
-    foreach (var descriptor in licenseCatalog.GetDescriptors())
+    foreach (var descriptor in _licenseCatalog.GetDescriptors())
     {
       Descriptors.Add(descriptor);
     }
@@ -203,7 +203,7 @@ public sealed class IssueLicenseViewModel : ViewModelBase
     SelectedDescriptor ??= Descriptors.FirstOrDefault();
 
     Parties.Clear();
-    foreach (var party in await partyService.ListAsync(null))
+    foreach (var party in await _partyService.ListAsync(null))
     {
       Parties.Add(party);
     }
@@ -267,7 +267,7 @@ public sealed class IssueLicenseViewModel : ViewModelBase
       [LicenseEntitlementFields.CountryCodes] = string.Join(",", Countries.Where(c => c.IsSelected).Select(c => c.Code))
     };
 
-    await licenseService.IssueAsync(new IssueLicenseRequest(
+    await _licenseService.IssueAsync(new IssueLicenseRequest(
       SelectedDescriptor.Discriminator,
       SerialNumber,
       SelectedLicensor.Id,

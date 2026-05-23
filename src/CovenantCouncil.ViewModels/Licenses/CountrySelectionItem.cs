@@ -1,10 +1,10 @@
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace CovenantCouncil.ViewModels.Licenses;
 
 public sealed class CountrySelectionItem(string code, string name) : ReactiveObject
 {
-  private bool isSelected;
+  private bool _isSelected;
 
   public string Code { get; } = code;
 
@@ -16,12 +16,12 @@ public sealed class CountrySelectionItem(string code, string name) : ReactiveObj
 
   public bool IsSelected
   {
-    get => isSelected;
+    get => _isSelected;
     set
     {
-      if (isSelected != value)
+      if (_isSelected != value)
       {
-        this.RaiseAndSetIfChanged(ref isSelected, value);
+        this.RaiseAndSetIfChanged(ref _isSelected, value);
         this.RaisePropertyChanged(nameof(SelectionStateText));
       }
     }

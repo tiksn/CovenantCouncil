@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Settings;
+﻿namespace CovenantCouncil.UseCases.Settings;
 
 public sealed record ApplicationSettings(
   string? OtlpEndpoint,

@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Certificates;
+﻿using CovenantCouncil.UseCases.Certificates;
 using CovenantCouncil.ViewModels.Certificates;
 using NSubstitute;
 using Shouldly;

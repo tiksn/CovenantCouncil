@@ -1,15 +1,15 @@
-using CovenantCouncil.ViewModels.Settings;
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.App.Services;
 using CovenantCouncil.UseCases.Abstractions;
-using System.Reactive.Threading.Tasks;
+using CovenantCouncil.ViewModels.Settings;
 
 namespace CovenantCouncil.App.Views;
 
 public partial class DatabaseGatePage : ContentPage
 {
-  private readonly DatabaseGateViewModel viewModel;
-  private readonly ApplicationSettingsViewModel settingsViewModel;
-  private readonly IDatabaseFilePicker databaseFilePicker;
+  private readonly DatabaseGateViewModel _viewModel;
+  private readonly ApplicationSettingsViewModel _settingsViewModel;
+  private readonly IDatabaseFilePicker _databaseFilePicker;
 
   public DatabaseGatePage(
     DatabaseGateViewModel viewModel,
@@ -17,16 +17,16 @@ public partial class DatabaseGatePage : ContentPage
     IDatabaseFilePicker databaseFilePicker)
   {
     InitializeComponent();
-    this.viewModel = viewModel;
-    this.settingsViewModel = settingsViewModel;
-    this.databaseFilePicker = databaseFilePicker;
-    BindingContext = this.viewModel;
-    ViewModelErrorObserver.Observe(this.viewModel);
+    _viewModel = viewModel;
+    _settingsViewModel = settingsViewModel;
+    _databaseFilePicker = databaseFilePicker;
+    BindingContext = _viewModel;
+    ViewModelErrorObserver.Observe(_viewModel);
   }
 
   private void PickFileClicked(object? sender, EventArgs e)
   {
-    _ = viewModel.RunWithBusyAsync(PickFileAsync);
+    _ = _viewModel.RunWithBusyAsync(PickFileAsync);
   }
 
   private async Task PickFileAsync()
@@ -44,8 +44,8 @@ public partial class DatabaseGatePage : ContentPage
 
       if (!string.IsNullOrWhiteSpace(path))
       {
-        viewModel.DatabasePath = path;
-        viewModel.SelectionMode = mode;
+        _viewModel.DatabasePath = path;
+        _viewModel.SelectionMode = mode;
       }
     }
     catch (Exception ex)
@@ -57,8 +57,8 @@ public partial class DatabaseGatePage : ContentPage
   private async Task<string?> PickDatabasePathAsync(DatabaseSelectionMode mode)
   {
     var path = mode == DatabaseSelectionMode.Open
-      ? await databaseFilePicker.PickOpenPathAsync()
-      : await databaseFilePicker.PickCreatePathAsync();
+      ? await _databaseFilePicker.PickOpenPathAsync()
+      : await _databaseFilePicker.PickCreatePathAsync();
 
     if (!string.IsNullOrWhiteSpace(path))
     {
@@ -77,7 +77,7 @@ public partial class DatabaseGatePage : ContentPage
   {
     try
     {
-      await viewModel.OpenOrCreateDatabase.Execute().ToTask();
+      await _viewModel.OpenOrCreateDatabase.Execute().ToTask();
       if (Shell.Current is AppShell appShell)
       {
         await appShell.ShowDatabaseWorkspaceAsync();
@@ -91,14 +91,14 @@ public partial class DatabaseGatePage : ContentPage
 
   private void SettingsClicked(object? sender, EventArgs e)
   {
-    _ = viewModel.RunWithBusyAsync(OpenSettingsAsync);
+    _ = _viewModel.RunWithBusyAsync(OpenSettingsAsync);
   }
 
   private async Task OpenSettingsAsync()
   {
     try
     {
-      await Navigation.PushModalAsync(new NavigationPage(new SettingsPage(settingsViewModel)));
+      await Navigation.PushModalAsync(new NavigationPage(new SettingsPage(_settingsViewModel)));
     }
     catch (Exception ex)
     {

@@ -1,3 +1,6 @@
+﻿using System.Globalization;
+using System.Net.Mail;
+using System.Security.Cryptography.X509Certificates;
 using CovenantCouncil.Infrastructure.Certificates;
 using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Data.Entities;
@@ -8,9 +11,6 @@ using Google.Protobuf;
 using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Net.Mail;
-using System.Security.Cryptography.X509Certificates;
 using TIKSN.Deployment;
 using TIKSN.Licensing;
 using FossaCompanyEntitlements = Fossa.Licensing.CompanyEntitlements;
@@ -45,9 +45,7 @@ public sealed class LicenseService(
         l.IssuedUtc))
       .ToListAsync(cancellationToken);
 
-    return licenses
-      .OrderByDescending(l => l.IssuedUtc)
-      .ToList();
+    return [.. licenses.OrderByDescending(l => l.IssuedUtc)];
   }
 
   public async Task<Guid> IssueAsync(IssueLicenseRequest request, CancellationToken cancellationToken = default)
@@ -187,7 +185,7 @@ public sealed class LicenseService(
     }
 
     var license = GetValid(factory.Create(terms, entitlements, signingCertificate));
-    return license.Data.ToArray();
+    return [.. license.Data];
   }
 
   private static T GetValid<T>(Validation<Error, T> validation)
@@ -236,7 +234,7 @@ public sealed class LicenseService(
       throw new InvalidOperationException("At least one country must be selected.");
     }
 
-    return countryCodes.Select(code => new RegionInfo(code)).ToArray();
+    return [.. countryCodes.Select(code => new RegionInfo(code))];
   }
 
   private static int ParseInt32(IReadOnlyDictionary<string, string> values, string key)

@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
@@ -7,12 +7,12 @@ namespace CovenantCouncil.ViewModels.Parties;
 
 public sealed class PartiesViewModel : ViewModelBase
 {
-  private readonly IPartyService partyService;
-  private PartyKind? selectedKind;
+  private readonly IPartyService _partyService;
+  private PartyKind? _selectedKind;
 
   public PartiesViewModel(IPartyService partyService)
   {
-    this.partyService = partyService;
+    _partyService = partyService;
     Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Save = ReactiveCommand.CreateFromTask<UpsertParty>(SaveAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
@@ -25,10 +25,10 @@ public sealed class PartiesViewModel : ViewModelBase
 
   public PartyKind? SelectedKind
   {
-    get => selectedKind;
+    get => _selectedKind;
     set
     {
-      this.RaiseAndSetIfChanged(ref selectedKind, value);
+      this.RaiseAndSetIfChanged(ref _selectedKind, value);
       _ = Load.Execute().Subscribe(_ => { }, HandleException);
     }
   }
@@ -44,7 +44,7 @@ public sealed class PartiesViewModel : ViewModelBase
   private async Task LoadAsync()
   {
     Parties.Clear();
-    foreach (var party in await partyService.ListAsync(SelectedKind))
+    foreach (var party in await _partyService.ListAsync(SelectedKind))
     {
       Parties.Add(party);
     }
@@ -52,13 +52,13 @@ public sealed class PartiesViewModel : ViewModelBase
 
   private async Task SaveAsync(UpsertParty party)
   {
-    await partyService.SaveAsync(party);
+    await _partyService.SaveAsync(party);
     await LoadAsync();
   }
 
   private async Task DeleteAsync(Guid id)
   {
-    await partyService.DeleteAsync(id);
+    await _partyService.DeleteAsync(id);
     await LoadAsync();
   }
 }

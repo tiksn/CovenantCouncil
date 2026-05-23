@@ -1,8 +1,8 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace CovenantCouncil.App.Services;
 
-public sealed class RollingFileLoggerProvider(RollingFileLogSink sink) : ILoggerProvider
+public sealed partial class RollingFileLoggerProvider(RollingFileLogSink sink) : ILoggerProvider
 {
   public ILogger CreateLogger(string categoryName)
   {

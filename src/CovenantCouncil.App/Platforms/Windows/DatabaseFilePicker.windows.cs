@@ -1,11 +1,11 @@
-using Microsoft.Maui.Platform;
+﻿using Microsoft.Maui.Platform;
 using Windows.Storage.Pickers;
 
 namespace CovenantCouncil.App.Services;
 
 public sealed partial class DatabaseFilePicker
 {
-  public partial async Task<string?> PickCreatePathAsync(CancellationToken cancellationToken)
+  public async partial Task<string?> PickCreatePathAsync(CancellationToken cancellationToken)
   {
     var picker = new FileSavePicker
     {

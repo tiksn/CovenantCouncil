@@ -1,24 +1,24 @@
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using ReactiveUI;
 
 namespace CovenantCouncil.ViewModels;
 
 public abstract class ViewModelBase : ReactiveObject
 {
-  private int busyOperationCount;
-  private string? errorMessage;
-  private bool isBusy;
+  private int _busyOperationCount;
+  private string? _errorMessage;
+  private bool _isBusy;
 
   public string? ErrorMessage
   {
-    get => errorMessage;
-    protected set => this.RaiseAndSetIfChanged(ref errorMessage, value);
+    get => _errorMessage;
+    protected set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
   }
 
   public bool IsBusy
   {
-    get => isBusy;
-    protected set => this.RaiseAndSetIfChanged(ref isBusy, value);
+    get => _isBusy;
+    protected set => this.RaiseAndSetIfChanged(ref _isBusy, value);
   }
 
   protected void ObserveCommandErrors<TInput, TOutput>(ReactiveCommand<TInput, TOutput> command)
@@ -62,13 +62,13 @@ public abstract class ViewModelBase : ReactiveObject
 
   private void BeginBusy()
   {
-    busyOperationCount++;
-    IsBusy = busyOperationCount > 0;
+    _busyOperationCount++;
+    IsBusy = _busyOperationCount > 0;
   }
 
   private void EndBusy()
   {
-    busyOperationCount = Math.Max(0, busyOperationCount - 1);
-    IsBusy = busyOperationCount > 0;
+    _busyOperationCount = Math.Max(0, _busyOperationCount - 1);
+    IsBusy = _busyOperationCount > 0;
   }
 }

@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Parties;
+﻿namespace CovenantCouncil.UseCases.Parties;
 
 public sealed record PartySummary(
   Guid Id,

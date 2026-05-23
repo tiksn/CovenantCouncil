@@ -1,3 +1,4 @@
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.Core;
 using CovenantCouncil.Infrastructure;
 using CovenantCouncil.UseCases.Abstractions;
@@ -6,7 +7,6 @@ using CovenantCouncil.ViewModels.Licenses;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Reactive.Threading.Tasks;
 using Xunit;
 
 namespace CovenantCouncil.IntegrationTests;

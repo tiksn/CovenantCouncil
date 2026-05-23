@@ -1,4 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Data.Entities;
 using CovenantCouncil.UseCases.Certificates;
@@ -25,13 +25,12 @@ public sealed class CertificateService(IDbContextFactory<CovenantCouncilDbContex
     CertificateTreeNode Build(CertificateSummary certificate)
     {
       var descendants = children.GetValueOrDefault(certificate.Thumbprint) ?? [];
-      return new CertificateTreeNode(certificate, descendants.Select(Build).ToList());
+      return new CertificateTreeNode(certificate, [.. descendants.Select(Build)]);
     }
 
-    return all
+    return [.. all
       .Where(c => c.ParentThumbprint is null || !all.Any(parent => parent.Thumbprint == c.ParentThumbprint))
-      .Select(Build)
-      .ToList();
+      .Select(Build)];
   }
 
   public async Task ImportPublicChainAsync(IReadOnlyList<string> certificatePaths, CancellationToken cancellationToken = default)

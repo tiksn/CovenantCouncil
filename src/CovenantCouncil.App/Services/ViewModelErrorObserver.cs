@@ -1,4 +1,4 @@
-using CovenantCouncil.ViewModels;
+﻿using CovenantCouncil.ViewModels;
 
 namespace CovenantCouncil.App.Services;
 

@@ -1,4 +1,4 @@
-using System.Reactive;
+﻿using System.Reactive;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
 
@@ -6,19 +6,19 @@ namespace CovenantCouncil.ViewModels.Parties;
 
 public sealed class AddPartyViewModel : ViewModelBase
 {
-  private readonly IPartyService partyService;
-  private string? email;
-  private string? firstName;
-  private string? fullName;
-  private PartyKind kind = PartyKind.Individual;
-  private string? lastName;
-  private string? longName;
-  private string? shortName;
-  private string? website;
+  private readonly IPartyService _partyService;
+  private string? _email;
+  private string? _firstName;
+  private string? _fullName;
+  private PartyKind _kind = PartyKind.Individual;
+  private string? _lastName;
+  private string? _longName;
+  private string? _shortName;
+  private string? _website;
 
   public AddPartyViewModel(IPartyService partyService)
   {
-    this.partyService = partyService;
+    _partyService = partyService;
     Save = ReactiveCommand.CreateFromTask(SaveAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     ObserveCommandErrors(Save);
   }
@@ -27,10 +27,10 @@ public sealed class AddPartyViewModel : ViewModelBase
 
   public PartyKind Kind
   {
-    get => kind;
+    get => _kind;
     set
     {
-      this.RaiseAndSetIfChanged(ref kind, value);
+      this.RaiseAndSetIfChanged(ref _kind, value);
       this.RaisePropertyChanged(nameof(IsIndividual));
       this.RaisePropertyChanged(nameof(IsOrganization));
     }
@@ -42,51 +42,51 @@ public sealed class AddPartyViewModel : ViewModelBase
 
   public string? Email
   {
-    get => email;
-    set => this.RaiseAndSetIfChanged(ref email, value);
+    get => _email;
+    set => this.RaiseAndSetIfChanged(ref _email, value);
   }
 
   public string? Website
   {
-    get => website;
-    set => this.RaiseAndSetIfChanged(ref website, value);
+    get => _website;
+    set => this.RaiseAndSetIfChanged(ref _website, value);
   }
 
   public string? FirstName
   {
-    get => firstName;
-    set => this.RaiseAndSetIfChanged(ref firstName, value);
+    get => _firstName;
+    set => this.RaiseAndSetIfChanged(ref _firstName, value);
   }
 
   public string? LastName
   {
-    get => lastName;
-    set => this.RaiseAndSetIfChanged(ref lastName, value);
+    get => _lastName;
+    set => this.RaiseAndSetIfChanged(ref _lastName, value);
   }
 
   public string? FullName
   {
-    get => fullName;
-    set => this.RaiseAndSetIfChanged(ref fullName, value);
+    get => _fullName;
+    set => this.RaiseAndSetIfChanged(ref _fullName, value);
   }
 
   public string? ShortName
   {
-    get => shortName;
-    set => this.RaiseAndSetIfChanged(ref shortName, value);
+    get => _shortName;
+    set => this.RaiseAndSetIfChanged(ref _shortName, value);
   }
 
   public string? LongName
   {
-    get => longName;
-    set => this.RaiseAndSetIfChanged(ref longName, value);
+    get => _longName;
+    set => this.RaiseAndSetIfChanged(ref _longName, value);
   }
 
   public ReactiveCommand<Unit, Unit> Save { get; }
 
   private async Task SaveAsync()
   {
-    await partyService.SaveAsync(new UpsertParty(
+    await _partyService.SaveAsync(new UpsertParty(
       Id: null,
       Kind,
       Email,

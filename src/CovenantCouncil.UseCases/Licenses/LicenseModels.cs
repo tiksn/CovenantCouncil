@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Licenses;
+﻿namespace CovenantCouncil.UseCases.Licenses;
 
 public sealed record LicenseDescriptorSummary(
   string Discriminator,

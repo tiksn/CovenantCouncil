@@ -1,4 +1,4 @@
-using CovenantCouncil.Infrastructure.Data;
+﻿using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Security;
 using CovenantCouncil.UseCases.Abstractions;
 

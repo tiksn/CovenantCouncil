@@ -1,4 +1,4 @@
-using CovenantCouncil.Infrastructure.Data.Entities;
+﻿using CovenantCouncil.Infrastructure.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CovenantCouncil.Infrastructure.Data;

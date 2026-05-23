@@ -1,8 +1,8 @@
-namespace CovenantCouncil.App.Services;
+﻿namespace CovenantCouncil.App.Services;
 
 public static class AppErrorPresenter
 {
-  private static int isShowing;
+  private static int _isShowing;
 
   public static void Show(Exception exception)
   {
@@ -11,7 +11,7 @@ public static class AppErrorPresenter
 
   public static void ShowMessage(string message)
   {
-    if (Interlocked.Exchange(ref isShowing, 1) == 1)
+    if (Interlocked.Exchange(ref _isShowing, 1) == 1)
     {
       return;
     }
@@ -31,7 +31,7 @@ public static class AppErrorPresenter
     }
     finally
     {
-      Interlocked.Exchange(ref isShowing, 0);
+      Interlocked.Exchange(ref _isShowing, 0);
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace CovenantCouncil.Infrastructure.Security;
+﻿namespace CovenantCouncil.Infrastructure.Security;
 
 public interface IPortableProtectionService
 {

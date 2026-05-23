@@ -1,4 +1,4 @@
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Reactive;
 using System.Reactive.Threading.Tasks;
 using Microsoft.Reactive.Testing;

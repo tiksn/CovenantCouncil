@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Abstractions;
+﻿namespace CovenantCouncil.UseCases.Abstractions;
 
 public enum DatabaseSelectionMode
 {

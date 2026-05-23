@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Certificates;
+﻿namespace CovenantCouncil.UseCases.Certificates;
 
 public sealed record CertificateSummary(
   Guid Id,

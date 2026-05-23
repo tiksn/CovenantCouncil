@@ -1,4 +1,4 @@
-namespace CovenantCouncil.Infrastructure.Data;
+﻿namespace CovenantCouncil.Infrastructure.Data;
 
 public interface IDatabasePathProvider
 {

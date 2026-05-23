@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Data.Sqlite;
 
 namespace CovenantCouncil.Infrastructure.Data;

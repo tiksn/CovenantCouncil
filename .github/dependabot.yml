@@ -3,7 +3,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "nuget"
+  - package-ecosystem: nuget
     directory: "/"
     labels:
       - "dependencies"
@@ -12,9 +12,9 @@ updates:
     schedule:
       interval: "daily"
     reviewers:
-      - tiksn
+      - "tiksn"
     assignees:
-      - tiksn
+      - "tiksn"
   - package-ecosystem: "github-actions"
     directory: "/"
     labels:
@@ -24,6 +24,6 @@ updates:
     schedule:
       interval: "daily"
     reviewers:
-      - tiksn
+      - "tiksn"
     assignees:
-      - tiksn
+      - "tiksn"

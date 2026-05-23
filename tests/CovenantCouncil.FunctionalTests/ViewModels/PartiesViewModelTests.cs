@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Parties;
+﻿using CovenantCouncil.UseCases.Parties;
 using CovenantCouncil.ViewModels.Parties;
 using NSubstitute;
 using Shouldly;

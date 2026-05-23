@@ -1,3 +1,5 @@
+﻿using CovenantCouncil.App.Services;
+using CovenantCouncil.App.Views;
 using CovenantCouncil.Core;
 using CovenantCouncil.Infrastructure;
 using CovenantCouncil.ViewModels;
@@ -5,8 +7,6 @@ using CovenantCouncil.ViewModels.Certificates;
 using CovenantCouncil.ViewModels.Licenses;
 using CovenantCouncil.ViewModels.Parties;
 using CovenantCouncil.ViewModels.Settings;
-using CovenantCouncil.App.Services;
-using CovenantCouncil.App.Views;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;

@@ -1,19 +1,19 @@
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.App.Services;
 using CovenantCouncil.ViewModels.Parties;
-using System.Reactive.Threading.Tasks;
 
 namespace CovenantCouncil.App.Views;
 
 public partial class AddPartyPage : ContentPage
 {
-  private readonly AddPartyViewModel viewModel;
+  private readonly AddPartyViewModel _viewModel;
 
   public AddPartyPage(AddPartyViewModel viewModel)
   {
     InitializeComponent();
-    this.viewModel = viewModel;
-    BindingContext = this.viewModel;
-    ViewModelErrorObserver.Observe(this.viewModel);
+    _viewModel = viewModel;
+    BindingContext = _viewModel;
+    ViewModelErrorObserver.Observe(_viewModel);
   }
 
   public event EventHandler? Saved;
@@ -32,7 +32,7 @@ public partial class AddPartyPage : ContentPage
   {
     try
     {
-      await viewModel.Save.Execute().ToTask();
+      await _viewModel.Save.Execute().ToTask();
       Saved?.Invoke(this, EventArgs.Empty);
       await Navigation.PopAsync();
     }

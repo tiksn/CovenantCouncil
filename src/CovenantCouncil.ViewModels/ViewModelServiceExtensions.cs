@@ -1,4 +1,4 @@
-using CovenantCouncil.ViewModels.Certificates;
+﻿using CovenantCouncil.ViewModels.Certificates;
 using CovenantCouncil.ViewModels.Licenses;
 using CovenantCouncil.ViewModels.Parties;
 using CovenantCouncil.ViewModels.Settings;

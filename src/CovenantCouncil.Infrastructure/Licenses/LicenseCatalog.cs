@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Licenses;
+﻿using CovenantCouncil.UseCases.Licenses;
 
 namespace CovenantCouncil.Infrastructure.Licenses;
 
@@ -13,9 +13,7 @@ public sealed class LicenseCatalog : ILicenseCatalog
       FromDescriptor(new VerdantApp.Licensing.SystemLicenseDescriptor(), LicenseEntitlementKinds.VerdantSystem)
     };
 
-    return descriptors
-      .OrderBy(x => x.Name)
-      .ToList();
+    return [.. descriptors.OrderBy(x => x.Name)];
   }
 
   private static LicenseDescriptorSummary FromDescriptor<TEntitlements>(

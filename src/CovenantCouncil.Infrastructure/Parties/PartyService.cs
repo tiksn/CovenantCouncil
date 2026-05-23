@@ -1,4 +1,4 @@
-using CovenantCouncil.Infrastructure.Data;
+﻿using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Data.Entities;
 using CovenantCouncil.UseCases.Parties;
 using Microsoft.EntityFrameworkCore;

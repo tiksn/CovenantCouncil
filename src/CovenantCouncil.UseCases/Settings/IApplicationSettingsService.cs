@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Settings;
+﻿namespace CovenantCouncil.UseCases.Settings;
 
 public interface IApplicationSettingsService
 {

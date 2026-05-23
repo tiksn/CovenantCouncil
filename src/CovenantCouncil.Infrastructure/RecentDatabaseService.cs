@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Abstractions;
+﻿using CovenantCouncil.UseCases.Abstractions;
 using CovenantCouncil.UseCases.Settings;
 
 namespace CovenantCouncil.Infrastructure;

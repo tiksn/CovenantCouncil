@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 #if !ANDROID && !IOS && !MACCATALYST
 using TIKSN.DependencyInjection;
 #endif

@@ -1,21 +1,21 @@
+﻿using System.Reactive;
 using CovenantCouncil.UseCases.Abstractions;
 using ReactiveUI;
-using System.Reactive;
 
 namespace CovenantCouncil.ViewModels.Settings;
 
 public sealed class DatabaseGateViewModel : ViewModelBase
 {
-  private readonly IDatabaseSessionService databaseSessionService;
-  private readonly IRecentDatabaseService recentDatabaseService;
-  private string databasePath = "";
-  private string password = "";
-  private DatabaseSelectionMode selectionMode = DatabaseSelectionMode.OpenOrCreate;
+  private readonly IDatabaseSessionService _databaseSessionService;
+  private readonly IRecentDatabaseService _recentDatabaseService;
+  private string _databasePath = "";
+  private string _password = "";
+  private DatabaseSelectionMode _selectionMode = DatabaseSelectionMode.OpenOrCreate;
 
   public DatabaseGateViewModel(IDatabaseSessionService databaseSessionService, IRecentDatabaseService recentDatabaseService)
   {
-    this.databaseSessionService = databaseSessionService;
-    this.recentDatabaseService = recentDatabaseService;
+    _databaseSessionService = databaseSessionService;
+    _recentDatabaseService = recentDatabaseService;
     OpenOrCreateDatabase = ReactiveCommand.CreateFromTask(OpenOrCreateDatabaseAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     LoadRecent = ReactiveCommand.CreateFromTask(LoadRecentAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     ObserveCommandErrors(OpenOrCreateDatabase);
@@ -24,20 +24,20 @@ public sealed class DatabaseGateViewModel : ViewModelBase
 
   public string DatabasePath
   {
-    get => databasePath;
-    set => this.RaiseAndSetIfChanged(ref databasePath, value);
+    get => _databasePath;
+    set => this.RaiseAndSetIfChanged(ref _databasePath, value);
   }
 
   public string Password
   {
-    get => password;
-    set => this.RaiseAndSetIfChanged(ref password, value);
+    get => _password;
+    set => this.RaiseAndSetIfChanged(ref _password, value);
   }
 
   public DatabaseSelectionMode SelectionMode
   {
-    get => selectionMode;
-    set => this.RaiseAndSetIfChanged(ref selectionMode, value);
+    get => _selectionMode;
+    set => this.RaiseAndSetIfChanged(ref _selectionMode, value);
   }
 
   public IReadOnlyList<string> RecentDatabasePaths { get; private set; } = [];
@@ -48,7 +48,7 @@ public sealed class DatabaseGateViewModel : ViewModelBase
 
   private async Task LoadRecentAsync()
   {
-    RecentDatabasePaths = await recentDatabaseService.GetRecentAsync();
+    RecentDatabasePaths = await _recentDatabaseService.GetRecentAsync();
     this.RaisePropertyChanged(nameof(RecentDatabasePaths));
   }
 
@@ -57,13 +57,13 @@ public sealed class DatabaseGateViewModel : ViewModelBase
     switch (SelectionMode)
     {
       case DatabaseSelectionMode.Open:
-        await databaseSessionService.OpenAsync(DatabasePath, Password);
+        await _databaseSessionService.OpenAsync(DatabasePath, Password);
         break;
       case DatabaseSelectionMode.Create:
-        await databaseSessionService.CreateAsync(DatabasePath, Password);
+        await _databaseSessionService.CreateAsync(DatabasePath, Password);
         break;
       default:
-        await databaseSessionService.OpenOrCreateAsync(DatabasePath, Password);
+        await _databaseSessionService.OpenOrCreateAsync(DatabasePath, Password);
         break;
     }
   }

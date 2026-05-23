@@ -1,4 +1,4 @@
-namespace CovenantCouncil.Infrastructure.Data;
+﻿namespace CovenantCouncil.Infrastructure.Data;
 
 public sealed class DatabasePathProvider : IDatabasePathProvider
 {

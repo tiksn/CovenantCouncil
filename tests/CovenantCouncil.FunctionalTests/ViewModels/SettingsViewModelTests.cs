@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Abstractions;
+﻿using CovenantCouncil.UseCases.Abstractions;
 using CovenantCouncil.UseCases.Settings;
 using CovenantCouncil.ViewModels.Settings;
 using NSubstitute;
@@ -74,6 +74,8 @@ public sealed class SettingsViewModelTests
     viewModel.IsBusy.ShouldBeFalse();
   }
 
+  private static readonly string[] _second = ["a.ccdb", "b.ccdb"];
+
   [Fact]
   public async Task ApplicationSettings_LoadAndSave_RoundTripsPublicState()
   {
@@ -96,7 +98,7 @@ public sealed class SettingsViewModelTests
     await settingsService.Received(1).SaveAsync(
       Arg.Is<ApplicationSettings>(x =>
         x.OtlpEndpoint == "http://changed.example" &&
-        x.RecentDatabasePaths.SequenceEqual(new[] { "a.ccdb", "b.ccdb" })),
+        x.RecentDatabasePaths.SequenceEqual(_second)),
       Arg.Any<CancellationToken>());
   }
 

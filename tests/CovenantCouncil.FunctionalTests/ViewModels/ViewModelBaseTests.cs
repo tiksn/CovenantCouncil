@@ -1,4 +1,4 @@
-using System.Reactive;
+﻿using System.Reactive;
 using CovenantCouncil.ViewModels;
 using ReactiveUI;
 using Shouldly;

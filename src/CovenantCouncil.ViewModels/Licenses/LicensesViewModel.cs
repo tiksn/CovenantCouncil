@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using CovenantCouncil.UseCases.Licenses;
 using ReactiveUI;
@@ -7,19 +7,19 @@ namespace CovenantCouncil.ViewModels.Licenses;
 
 public sealed class LicensesViewModel : ViewModelBase
 {
-  private readonly ILicenseCatalog licenseCatalog;
-  private readonly ILicenseService licenseService;
-  private bool isLoading;
-  private LicenseDescriptorSummary? selectedDescriptor;
+  private readonly ILicenseCatalog _licenseCatalog;
+  private readonly ILicenseService _licenseService;
+  private bool _isLoading;
+  private LicenseDescriptorSummary? _selectedDescriptor;
 
   public LicensesViewModel(ILicenseCatalog licenseCatalog, ILicenseService licenseService)
   {
-    this.licenseCatalog = licenseCatalog;
-    this.licenseService = licenseService;
+    _licenseCatalog = licenseCatalog;
+    _licenseService = licenseService;
     Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Issue = ReactiveCommand.CreateFromTask<IssueLicenseRequest>(IssueAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Export = ReactiveCommand.CreateFromTask<(Guid Id, string Path)>(request => licenseService.ExportAsync(request.Id, request.Path), outputScheduler: RxSchedulers.MainThreadScheduler);
-    Import = ReactiveCommand.CreateFromTask<string>(licenseService.ImportAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Export = ReactiveCommand.CreateFromTask<(Guid Id, string Path)>(request => _licenseService.ExportAsync(request.Id, request.Path), outputScheduler: RxSchedulers.MainThreadScheduler);
+    Import = ReactiveCommand.CreateFromTask<string>(_licenseService.ImportAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
     ObserveCommandErrors(Load);
     ObserveCommandErrors(Issue);
@@ -34,12 +34,12 @@ public sealed class LicensesViewModel : ViewModelBase
 
   public LicenseDescriptorSummary? SelectedDescriptor
   {
-    get => selectedDescriptor;
+    get => _selectedDescriptor;
     set
     {
-      var changed = !EqualityComparer<LicenseDescriptorSummary?>.Default.Equals(selectedDescriptor, value);
-      this.RaiseAndSetIfChanged(ref selectedDescriptor, value);
-      if (changed && !isLoading)
+      var changed = !EqualityComparer<LicenseDescriptorSummary?>.Default.Equals(_selectedDescriptor, value);
+      this.RaiseAndSetIfChanged(ref _selectedDescriptor, value);
+      if (changed && !_isLoading)
       {
         _ = LoadLicensesAsync().ContinueWith(
           task =>
@@ -66,11 +66,11 @@ public sealed class LicensesViewModel : ViewModelBase
 
   private async Task LoadAsync()
   {
-    isLoading = true;
+    _isLoading = true;
     try
     {
       Descriptors.Clear();
-      foreach (var descriptor in licenseCatalog.GetDescriptors())
+      foreach (var descriptor in _licenseCatalog.GetDescriptors())
       {
         Descriptors.Add(descriptor);
       }
@@ -79,14 +79,14 @@ public sealed class LicensesViewModel : ViewModelBase
     }
     finally
     {
-      isLoading = false;
+      _isLoading = false;
     }
   }
 
   private async Task LoadLicensesAsync()
   {
     Licenses.Clear();
-    foreach (var license in await licenseService.ListAsync(SelectedDescriptor?.Discriminator))
+    foreach (var license in await _licenseService.ListAsync(SelectedDescriptor?.Discriminator))
     {
       Licenses.Add(license);
     }
@@ -94,13 +94,13 @@ public sealed class LicensesViewModel : ViewModelBase
 
   private async Task IssueAsync(IssueLicenseRequest request)
   {
-    await licenseService.IssueAsync(request);
+    await _licenseService.IssueAsync(request);
     await LoadLicensesAsync();
   }
 
   private async Task DeleteAsync(Guid id)
   {
-    await licenseService.DeleteAsync(id);
+    await _licenseService.DeleteAsync(id);
     await LoadLicensesAsync();
   }
 }

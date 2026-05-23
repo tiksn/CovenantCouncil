@@ -1,4 +1,4 @@
-using CovenantCouncil.Infrastructure.Certificates;
+﻿using CovenantCouncil.Infrastructure.Certificates;
 using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Licenses;
 using CovenantCouncil.Infrastructure.Parties;

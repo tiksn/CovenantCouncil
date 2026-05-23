@@ -1,20 +1,21 @@
-using System.Text;
+﻿using System.Text;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 
 namespace CovenantCouncil.App.Services;
 
-public sealed class RollingFileLogSink : IDisposable
+public sealed partial class RollingFileLogSink : IDisposable
 {
   private const long MaxFileBytes = 1_048_576;
   private const int MaxFiles = 10;
-  private readonly object gate = new();
-  private readonly string logDirectory;
-  private StreamWriter? writer;
-  private string currentPath = "";
+  private readonly Lock _gate = new();
+  private readonly string _logDirectory;
+  private StreamWriter? _writer;
+  private string _currentPath = "";
 
   public RollingFileLogSink(string logDirectory)
   {
-    this.logDirectory = logDirectory;
+    this._logDirectory = logDirectory;
     Directory.CreateDirectory(logDirectory);
     OpenWriter();
   }
@@ -23,57 +24,57 @@ public sealed class RollingFileLogSink : IDisposable
   {
     get
     {
-      lock (gate)
+      lock (_gate)
       {
-        return currentPath;
+        return _currentPath;
       }
     }
   }
 
   public void Write(LogLevel level, string category, EventId eventId, string message, Exception? exception)
   {
-    lock (gate)
+    lock (_gate)
     {
       RollIfNeeded();
 
-      writer?.Write(DateTimeOffset.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
-      writer?.Write(" [");
-      writer?.Write(level);
-      writer?.Write("] ");
-      writer?.Write(category);
+      _writer?.Write(DateTimeOffset.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture));
+      _writer?.Write(" [");
+      _writer?.Write(level);
+      _writer?.Write("] ");
+      _writer?.Write(category);
       if (eventId.Id != 0 || !string.IsNullOrWhiteSpace(eventId.Name))
       {
-        writer?.Write(" ");
-        writer?.Write(eventId);
+        _writer?.Write(" ");
+        _writer?.Write(eventId);
       }
 
-      writer?.Write(": ");
-      writer?.WriteLine(message);
+      _writer?.Write(": ");
+      _writer?.WriteLine(message);
 
       if (exception is not null)
       {
-        writer?.WriteLine(exception);
+        _writer?.WriteLine(exception);
       }
 
-      writer?.Flush();
+      _writer?.Flush();
     }
   }
 
   public void Flush()
   {
-    lock (gate)
+    lock (_gate)
     {
-      writer?.Flush();
-      writer?.BaseStream.Flush();
+      _writer?.Flush();
+      _writer?.BaseStream.Flush();
     }
   }
 
   public IReadOnlyList<string> FindCrashEntries()
   {
-    lock (gate)
+    lock (_gate)
     {
       Flush();
-      return Directory.EnumerateFiles(logDirectory, "covenant-council-*.log")
+      return [.. Directory.EnumerateFiles(_logDirectory, "covenant-council-*.log")
         .OrderByDescending(File.GetLastWriteTimeUtc)
         .Take(MaxFiles)
         .SelectMany(path => ReadLines(path)
@@ -84,24 +85,23 @@ public sealed class RollingFileLogSink : IDisposable
               line.Contains("Unhandled exception", StringComparison.OrdinalIgnoreCase) ||
               line.Contains("Unhandled WinUI exception", StringComparison.OrdinalIgnoreCase) ||
               line.Contains("Unhandled AppDomain exception", StringComparison.OrdinalIgnoreCase)))
-          .Select(line => $"{Path.GetFileName(path)}: {line}"))
-        .ToList();
+          .Select(line => $"{Path.GetFileName(path)}: {line}"))];
     }
   }
 
   public void Dispose()
   {
-    lock (gate)
+    lock (_gate)
     {
-      writer?.Dispose();
-      writer = null;
+      _writer?.Dispose();
+      _writer = null;
     }
   }
 
   private void OpenWriter()
   {
-    currentPath = Path.Combine(logDirectory, $"covenant-council-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.log");
-    writer = new StreamWriter(new FileStream(currentPath, FileMode.Append, FileAccess.Write, FileShare.Read, 4096, FileOptions.WriteThrough), Encoding.UTF8)
+    _currentPath = Path.Combine(_logDirectory, $"covenant-council-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}.log");
+    _writer = new StreamWriter(new FileStream(_currentPath, FileMode.Append, FileAccess.Write, FileShare.Read, 4096, FileOptions.WriteThrough), Encoding.UTF8)
     {
       AutoFlush = true
     };
@@ -110,18 +110,18 @@ public sealed class RollingFileLogSink : IDisposable
 
   private void RollIfNeeded()
   {
-    if (writer is null || writer.BaseStream.Length < MaxFileBytes)
+    if (_writer is null || _writer.BaseStream.Length < MaxFileBytes)
     {
       return;
     }
 
-    writer.Dispose();
+    _writer.Dispose();
     OpenWriter();
   }
 
   private void TrimOldFiles()
   {
-    foreach (var oldFile in Directory.EnumerateFiles(logDirectory, "covenant-council-*.log")
+    foreach (var oldFile in Directory.EnumerateFiles(_logDirectory, "covenant-council-*.log")
       .OrderByDescending(File.GetLastWriteTimeUtc)
       .Skip(MaxFiles))
     {

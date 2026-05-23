@@ -1,4 +1,4 @@
-namespace CovenantCouncil.Infrastructure.Data.Entities;
+﻿namespace CovenantCouncil.Infrastructure.Data.Entities;
 
 public sealed class LicenseEntity
 {

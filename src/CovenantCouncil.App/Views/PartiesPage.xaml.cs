@@ -1,18 +1,18 @@
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.App.Services;
 using CovenantCouncil.ViewModels.Parties;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reactive.Threading.Tasks;
 
 namespace CovenantCouncil.App.Views;
 
 public partial class PartiesPage : ContentPage
 {
-  private readonly IServiceProvider serviceProvider;
+  private readonly IServiceProvider _serviceProvider;
 
   public PartiesPage(PartiesViewModel viewModel, IServiceProvider serviceProvider)
   {
     InitializeComponent();
-    this.serviceProvider = serviceProvider;
+    _serviceProvider = serviceProvider;
     BindingContext = viewModel;
     ViewModelErrorObserver.Observe(viewModel);
     Loaded += (_, _) => _ = LoadAsync(viewModel);
@@ -47,7 +47,7 @@ public partial class PartiesPage : ContentPage
   {
     try
     {
-      var page = serviceProvider.GetRequiredService<AddPartyPage>();
+      var page = _serviceProvider.GetRequiredService<AddPartyPage>();
       page.Saved += (_, _) =>
       {
         if (BindingContext is PartiesViewModel viewModel)

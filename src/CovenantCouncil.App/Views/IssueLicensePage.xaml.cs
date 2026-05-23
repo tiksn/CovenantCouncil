@@ -1,19 +1,19 @@
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.App.Services;
 using CovenantCouncil.ViewModels.Licenses;
-using System.Reactive.Threading.Tasks;
 
 namespace CovenantCouncil.App.Views;
 
 public partial class IssueLicensePage : ContentPage
 {
-  private readonly IssueLicenseViewModel viewModel;
+  private readonly IssueLicenseViewModel _viewModel;
 
   public IssueLicensePage(IssueLicenseViewModel viewModel)
   {
     InitializeComponent();
-    this.viewModel = viewModel;
-    BindingContext = this.viewModel;
-    ViewModelErrorObserver.Observe(this.viewModel);
+    _viewModel = viewModel;
+    BindingContext = _viewModel;
+    ViewModelErrorObserver.Observe(_viewModel);
     Loaded += (_, _) => _ = LoadAsync();
   }
 
@@ -23,7 +23,7 @@ public partial class IssueLicensePage : ContentPage
   {
     try
     {
-      await viewModel.Load.Execute().ToTask();
+      await _viewModel.Load.Execute().ToTask();
     }
     catch (Exception ex)
     {
@@ -52,7 +52,7 @@ public partial class IssueLicensePage : ContentPage
 
       if (result is not null)
       {
-        viewModel.PfxPath = result.FullPath;
+        _viewModel.PfxPath = result.FullPath;
       }
     }
     catch (Exception ex)
@@ -70,7 +70,7 @@ public partial class IssueLicensePage : ContentPage
   {
     try
     {
-      await viewModel.Issue.Execute().ToTask();
+      await _viewModel.Issue.Execute().ToTask();
       Issued?.Invoke(this, EventArgs.Empty);
       await Navigation.PopAsync();
     }

@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using CovenantCouncil.Infrastructure.Data;
 using CovenantCouncil.Infrastructure.Data.Entities;
@@ -13,13 +13,13 @@ public sealed class PortableProtectionService(IDbContextFactory<CovenantCouncilD
   private const string ApplicationName = "CovenantCouncil";
   private const int NonceLength = 12;
   private const int TagLength = 16;
-  private byte[]? key;
+  private byte[]? _key;
 
-  public bool IsUnlocked => key is not null;
+  public bool IsUnlocked => _key is not null;
 
   public byte[] Protect(byte[] plaintext)
   {
-    var currentKey = key ?? throw new InvalidOperationException("Database protection is locked.");
+    var currentKey = _key ?? throw new InvalidOperationException("Database protection is locked.");
     var nonce = RandomNumberGenerator.GetBytes(NonceLength);
     var ciphertext = new byte[plaintext.Length];
     var tag = new byte[TagLength];
@@ -30,7 +30,7 @@ public sealed class PortableProtectionService(IDbContextFactory<CovenantCouncilD
 
   public byte[] Unprotect(byte[] protectedPayload)
   {
-    var currentKey = key ?? throw new InvalidOperationException("Database protection is locked.");
+    var currentKey = _key ?? throw new InvalidOperationException("Database protection is locked.");
     if (protectedPayload.Length < NonceLength + TagLength)
     {
       throw new CryptographicException("Protected payload is invalid.");
@@ -48,7 +48,7 @@ public sealed class PortableProtectionService(IDbContextFactory<CovenantCouncilD
   public async Task InitializeNewAsync(string databasePath, string password, CancellationToken cancellationToken = default)
   {
     var salt = RandomNumberGenerator.GetBytes(32);
-    key = DeriveKey(password, salt, DefaultIterations, DefaultKeyLength);
+    _key = DeriveKey(password, salt, DefaultIterations, DefaultKeyLength);
 
     await using var db = await dbContextFactory.CreateDbContextAsync(cancellationToken);
     var existing = await db.ProtectionMetadata.SingleOrDefaultAsync(x => x.Id == 1, cancellationToken);
@@ -81,7 +81,7 @@ public sealed class PortableProtectionService(IDbContextFactory<CovenantCouncilD
     var salt = UnprotectMetadata(password, metadata.ProtectedKdfSalt);
     var iterations = int.Parse(Encoding.UTF8.GetString(UnprotectMetadata(password, metadata.ProtectedKdfIterations)), System.Globalization.CultureInfo.InvariantCulture);
     var keyLength = int.Parse(Encoding.UTF8.GetString(UnprotectMetadata(password, metadata.ProtectedKeyLength)), System.Globalization.CultureInfo.InvariantCulture);
-    key = DeriveKey(password, salt, iterations, keyLength);
+    _key = DeriveKey(password, salt, iterations, keyLength);
     _ = UnprotectMetadata(password, metadata.ProtectedKeyRingXml);
   }
 
@@ -91,7 +91,7 @@ public sealed class PortableProtectionService(IDbContextFactory<CovenantCouncilD
     await reencrypt();
 
     var salt = RandomNumberGenerator.GetBytes(32);
-    key = DeriveKey(newPassword, salt, DefaultIterations, DefaultKeyLength);
+    _key = DeriveKey(newPassword, salt, DefaultIterations, DefaultKeyLength);
 
     await using var db = await dbContextFactory.CreateDbContextAsync(cancellationToken);
     var metadata = await db.ProtectionMetadata.SingleAsync(x => x.Id == 1, cancellationToken);

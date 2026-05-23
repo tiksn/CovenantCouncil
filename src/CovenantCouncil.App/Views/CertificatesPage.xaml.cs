@@ -1,6 +1,6 @@
+﻿using System.Reactive.Threading.Tasks;
 using CovenantCouncil.App.Services;
 using CovenantCouncil.ViewModels.Certificates;
-using System.Reactive.Threading.Tasks;
 
 namespace CovenantCouncil.App.Views;
 

@@ -1,4 +1,4 @@
-namespace CovenantCouncil.UseCases.Parties;
+﻿namespace CovenantCouncil.UseCases.Parties;
 
 public interface IPartyService
 {

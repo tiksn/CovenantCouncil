@@ -1,4 +1,4 @@
-using CovenantCouncil.UseCases.Licenses;
+﻿using CovenantCouncil.UseCases.Licenses;
 using CovenantCouncil.UseCases.Parties;
 using CovenantCouncil.ViewModels.Licenses;
 using NSubstitute;
