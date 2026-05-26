@@ -1,9 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.1.3" />
-
   <ItemGroup>
     <PackageReference Include="EasyDoubles" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Reactive.Testing" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="ReactiveUI.Testing" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
@@ -15,10 +17,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\CovenantCouncil.Infrastructure\CovenantCouncil.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\CovenantCouncil.UseCases\CovenantCouncil.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\CovenantCouncil.ViewModels\CovenantCouncil.ViewModels.csproj" />
   </ItemGroup>
-
 </Project>

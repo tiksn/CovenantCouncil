@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CovenantCouncil.App.Views.LicensesPage"
+             Title="Licenses">
+  <Grid Padding="20" RowDefinitions="Auto,*" RowSpacing="16">
+    <HorizontalStackLayout Spacing="12">
+      <Label Text="Licenses" FontSize="24" FontAttributes="Bold" VerticalOptions="Center" />
+      <Picker Title="Descriptor" ItemsSource="{Binding Descriptors}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedDescriptor}" WidthRequest="260" />
+      <Button Text="Issue" Clicked="IssueClicked" />
+      <Button Text="Refresh" Clicked="RefreshClicked" />
+    </HorizontalStackLayout>
+    <CollectionView Grid.Row="1" ItemsSource="{Binding Licenses}">
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <Grid Padding="12" ColumnDefinitions="220,*,220,180" BackgroundColor="{StaticResource PanelBackground}" Margin="0,0,0,8">
+            <Label Text="{Binding DescriptorName}" TextColor="{StaticResource Gold}" />
+            <Label Grid.Column="1" Text="{Binding PartyDisplayName}" FontAttributes="Bold" />
+            <Label Grid.Column="2" Text="{Binding SigningCertificateThumbprint}" TextColor="{StaticResource TextSecondary}" />
+            <Label Grid.Column="3" Text="{Binding IssuedUtc}" TextColor="{StaticResource TextSecondary}" />
+          </Grid>
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+    <Grid Grid.RowSpan="2"
+          BackgroundColor="#80000000"
+          IsVisible="{Binding IsBusy}">
+      <ActivityIndicator IsRunning="{Binding IsBusy}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+    </Grid>
+  </Grid>
+</ContentPage>

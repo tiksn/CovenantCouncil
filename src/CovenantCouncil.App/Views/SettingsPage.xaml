@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CovenantCouncil.App.Views.SettingsPage"
+             Title="Settings">
+  <Grid Padding="24" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+    <Label Text="Settings" FontSize="24" FontAttributes="Bold" />
+    <VerticalStackLayout Grid.Row="1" Spacing="8">
+      <Label Text="OTLP endpoint" TextColor="{StaticResource TextSecondary}" />
+      <Entry Placeholder="https://collector.example/v1/traces" Text="{Binding OtlpEndpoint}" />
+    </VerticalStackLayout>
+    <CollectionView Grid.Row="2" ItemsSource="{Binding RecentDatabasePaths}">
+      <CollectionView.Header>
+        <Label Text="Recent databases" FontAttributes="Bold" Margin="0,0,0,8" />
+      </CollectionView.Header>
+      <CollectionView.ItemTemplate>
+        <DataTemplate>
+          <Label Text="{Binding .}" TextColor="{StaticResource TextSecondary}" Margin="0,4" />
+        </DataTemplate>
+      </CollectionView.ItemTemplate>
+    </CollectionView>
+    <HorizontalStackLayout Grid.Row="3" Spacing="10" HorizontalOptions="End">
+      <Button Text="Cancel" Clicked="CancelClicked" />
+      <Button Text="Save" Clicked="SaveClicked" />
+    </HorizontalStackLayout>
+    <Grid Grid.RowSpan="4"
+          BackgroundColor="#80000000"
+          IsVisible="{Binding IsBusy}">
+      <ActivityIndicator IsRunning="{Binding IsBusy}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center" />
+    </Grid>
+  </Grid>
+</ContentPage>

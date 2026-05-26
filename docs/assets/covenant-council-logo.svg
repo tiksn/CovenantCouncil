@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Covenant Council logo</title>
+  <desc id="desc">A futuristic circular seal with angular certificate ribbon geometry.</desc>
+  <defs>
+    <linearGradient id="ring" x1="160" y1="120" x2="860" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8FE7FF"/>
+      <stop offset=".52" stop-color="#3FA6D9"/>
+      <stop offset="1" stop-color="#D7B56D"/>
+    </linearGradient>
+    <linearGradient id="core" x1="256" y1="208" x2="736" y2="820" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#12233D"/>
+      <stop offset="1" stop-color="#070B16"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" rx="220" fill="#0B1020"/>
+  <path fill="url(#ring)" d="M512 94c231 0 418 187 418 418S743 930 512 930 94 743 94 512 281 94 512 94Zm0 92c-180 0-326 146-326 326s146 326 326 326 326-146 326-326-146-326-326-326Z"/>
+  <path fill="#101A30" d="M512 238c151 0 274 123 274 274S663 786 512 786 238 663 238 512s123-274 274-274Z"/>
+  <path fill="url(#core)" d="M512 294 690 397v206L512 730 334 603V397l178-103Z"/>
+  <path fill="#D7B56D" d="M512 357 624 421v96L512 582 400 517v-96l112-64Z"/>
+  <path fill="#0B1020" d="M512 399 588 443v52l-76 44-76-44v-52l76-44Z"/>
+  <path fill="#8FE7FF" d="M313 632h398l-78 156-121-68-121 68-78-156Z"/>
+  <path fill="#15294B" d="M392 632h240l-120 68-120-68Z"/>
+  <path fill="#8FE7FF" d="M258 478h86v68h-86v-68Zm422 0h86v68h-86v-68Z"/>
+</svg>
