@@ -12,6 +12,7 @@ using LanguageExt;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using TIKSN.Deployment;
+using TIKSN.Globalization;
 using TIKSN.Licensing;
 using FossaCompanyEntitlements = Fossa.Licensing.CompanyEntitlements;
 using FossaSystemEntitlements = Fossa.Licensing.SystemEntitlements;
@@ -23,6 +24,7 @@ public sealed class LicenseService(
   IDbContextFactory<CovenantCouncilDbContext> dbContextFactory,
   IPortableProtectionService protectionService,
   ILicenseCatalog licenseCatalog,
+  ICountryFactory countryFactory,
   IServiceProvider serviceProvider) : ILicenseService
 {
   public async Task<IReadOnlyList<LicenseSummary>> ListAsync(string? descriptorDiscriminator, CancellationToken cancellationToken = default)
@@ -205,7 +207,7 @@ public sealed class LicenseService(
       ParseInt32(values, LicenseEntitlementFields.MaximumDepartmentCount));
   }
 
-  private static FossaSystemEntitlements CreateFossaSystemEntitlements(IReadOnlyDictionary<string, string> values)
+  private FossaSystemEntitlements CreateFossaSystemEntitlements(IReadOnlyDictionary<string, string> values)
   {
     return new FossaSystemEntitlements(
       ParseUlid(values, LicenseEntitlementFields.SystemId),
@@ -214,7 +216,7 @@ public sealed class LicenseService(
       LanguageExt.Prelude.Seq(ParseCountries(values)));
   }
 
-  private static VerdantSystemEntitlements CreateVerdantSystemEntitlements(IReadOnlyDictionary<string, string> values)
+  private VerdantSystemEntitlements CreateVerdantSystemEntitlements(IReadOnlyDictionary<string, string> values)
   {
     return new VerdantSystemEntitlements(
       ParseUlid(values, LicenseEntitlementFields.SystemId),
@@ -222,7 +224,7 @@ public sealed class LicenseService(
       LanguageExt.Prelude.Seq(ParseCountries(values)));
   }
 
-  private static RegionInfo[] ParseCountries(IReadOnlyDictionary<string, string> values)
+  private CountryInfo[] ParseCountries(IReadOnlyDictionary<string, string> values)
   {
     var countryCodes = Require(values, LicenseEntitlementFields.CountryCodes)
       .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
@@ -234,7 +236,7 @@ public sealed class LicenseService(
       throw new InvalidOperationException("At least one country must be selected.");
     }
 
-    return [.. countryCodes.Select(code => new RegionInfo(code))];
+    return [.. countryCodes.Select(countryFactory.Create)];
   }
 
   private static int ParseInt32(IReadOnlyDictionary<string, string> values, string key)
