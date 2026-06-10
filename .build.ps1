@@ -192,7 +192,7 @@ Task BuildSolution EstimateVersion, {
     $solution = Resolve-Path -Path $SolutionPath
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $solution /v:m /m:1 /nr:false /p:UseSharedCompilation=false /p:Configuration=Release /p:Version=$nextVersion }
+    Exec { dotnet build $solution /p:Configuration=Release /p:Version=$nextVersion }
 }
 
 # Synopsis: Build Windows app artifacts
@@ -202,7 +202,7 @@ Task BuildWindowsApp EstimateVersion, {
     $nextVersion = $state.NextVersion
     $outputFolder = $state.WindowsBuildArtifactsFolder
 
-    Exec { dotnet publish $project --framework net10.0-windows10.0.19041.0 /v:m /m:1 /nr:false /p:UseSharedCompilation=false /p:Configuration=Release /p:Version=$nextVersion /p:WindowsPackageType=None /p:PublishDir=$outputFolder }
+    Exec { dotnet publish $project --framework net10.0-windows10.0.19041.0 /p:Configuration=Release /p:Version=$nextVersion /p:WindowsPackageType=None /p:PublishDir=$outputFolder }
 }
 
 # Synopsis: Build
