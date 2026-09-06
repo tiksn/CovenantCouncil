@@ -17,7 +17,7 @@ public sealed class CertificatesViewModelTests
     var root = CreateNode("root", [CreateNode("child", [])]);
     certificateService.GetTreeAsync(Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<CertificateTreeNode>>([root]));
-    var viewModel = new CertificatesViewModel(certificateService, Substitute.For<ISequencers>());
+    var viewModel = new CertificatesViewModel(certificateService, ViewModelTestHelpers.CreateMockSequencers());
     var collectionChanges = ViewModelTestHelpers.ObserveCollection(viewModel.Roots);
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Load);
@@ -34,7 +34,7 @@ public sealed class CertificatesViewModelTests
     var root = CreateNode("imported", []);
     certificateService.GetTreeAsync(Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<CertificateTreeNode>>([root]));
-    var viewModel = new CertificatesViewModel(certificateService, Substitute.For<ISequencers>());
+    var viewModel = new CertificatesViewModel(certificateService, ViewModelTestHelpers.CreateMockSequencers());
     string[] paths = ["leaf.cer", "root.cer"];
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.ImportChain, paths);
@@ -50,7 +50,7 @@ public sealed class CertificatesViewModelTests
     var certificateService = Substitute.For<ICertificateService>();
     certificateService.GetTreeAsync(Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<CertificateTreeNode>>([]));
-    var viewModel = new CertificatesViewModel(certificateService, Substitute.For<ISequencers>());
+    var viewModel = new CertificatesViewModel(certificateService, ViewModelTestHelpers.CreateMockSequencers());
     var id = Guid.NewGuid();
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Delete, id);
@@ -66,7 +66,7 @@ public sealed class CertificatesViewModelTests
     var certificateService = Substitute.For<ICertificateService>();
     certificateService.GetTreeAsync(Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException<IReadOnlyList<CertificateTreeNode>>(new InvalidOperationException("tree failed")));
-    var viewModel = new CertificatesViewModel(certificateService, Substitute.For<ISequencers>());
+    var viewModel = new CertificatesViewModel(certificateService, ViewModelTestHelpers.CreateMockSequencers());
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Load);
 

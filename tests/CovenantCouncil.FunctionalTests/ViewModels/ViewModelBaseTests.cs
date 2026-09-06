@@ -62,7 +62,7 @@ public sealed class ViewModelBaseTests
 
   private sealed class TestViewModel : ViewModelBase
   {
-    public TestViewModel() : base(Substitute.For<ISequencers>())
+    public TestViewModel() : base(ViewModelTestHelpers.CreateMockSequencers())
     {
       Fail = ReactiveCommand.CreateFromTask(
         () => Task.FromException(new InvalidOperationException("command failed")),

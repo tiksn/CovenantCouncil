@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Reactive;
 using Microsoft.Reactive.Testing;
+using NSubstitute;
 using ReactiveUI;
 using ReactiveUI.Primitives;
 using ReactiveUI.Testing;
@@ -10,6 +11,13 @@ namespace CovenantCouncil.FunctionalTests.ViewModels;
 
 internal static class ViewModelTestHelpers
 {
+  public static ISequencers CreateMockSequencers()
+  {
+    var sequencers = Substitute.For<ISequencers>();
+    sequencers.MainThreadSequencer.Returns(ReactiveUI.Primitives.Concurrency.Sequencer.Immediate);
+    sequencers.TaskPoolSequencer.Returns(ReactiveUI.Primitives.Concurrency.Sequencer.Immediate);
+    return sequencers;
+  }
 
 
   public static Task ExecuteAsync(ReactiveCommand<RxVoid, RxVoid> command)

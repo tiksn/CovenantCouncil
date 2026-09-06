@@ -21,7 +21,7 @@ public sealed class LicensesViewModelTests
     catalog.GetDescriptors().Returns([descriptor]);
     licenseService.ListAsync(null, Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<LicenseSummary>>([license]));
-    var viewModel = new LicensesViewModel(catalog, licenseService, Substitute.For<ISequencers>());
+    var viewModel = new LicensesViewModel(catalog, licenseService, ViewModelTestHelpers.CreateMockSequencers());
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Load);
 
@@ -43,7 +43,7 @@ public sealed class LicensesViewModelTests
       .Returns(Task.FromResult<IReadOnlyList<LicenseSummary>>([]));
     licenseService.ListAsync("verdant", Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<LicenseSummary>>([license]));
-    var viewModel = new LicensesViewModel(catalog, licenseService, Substitute.For<ISequencers>());
+    var viewModel = new LicensesViewModel(catalog, licenseService, ViewModelTestHelpers.CreateMockSequencers());
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Load);
 
     viewModel.SelectedDescriptor = descriptor;
@@ -65,7 +65,7 @@ public sealed class LicensesViewModelTests
       .Returns(
         Task.FromResult<IReadOnlyList<LicenseSummary>>([issued]),
         Task.FromResult<IReadOnlyList<LicenseSummary>>([]));
-    var viewModel = new LicensesViewModel(catalog, licenseService, Substitute.For<ISequencers>());
+    var viewModel = new LicensesViewModel(catalog, licenseService, ViewModelTestHelpers.CreateMockSequencers());
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Issue, request);
     viewModel.Licenses.ShouldBe([issued]);
@@ -87,7 +87,7 @@ public sealed class LicensesViewModelTests
     var licenseService = Substitute.For<ILicenseService>();
     licenseService.ImportAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException(new InvalidOperationException("import failed")));
-    var viewModel = new LicensesViewModel(Substitute.For<ILicenseCatalog>(), licenseService, Substitute.For<ISequencers>());
+    var viewModel = new LicensesViewModel(Substitute.For<ILicenseCatalog>(), licenseService, ViewModelTestHelpers.CreateMockSequencers());
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Import, "bad.cclic");
 
@@ -106,7 +106,7 @@ public sealed class LicensesViewModelTests
     var partyService = Substitute.For<IPartyService>();
     partyService.ListAsync(null, Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<PartySummary>>([licensor, licensee]));
-    var viewModel = new IssueLicenseViewModel(catalog, Substitute.For<ILicenseService>(), partyService, Substitute.For<ISequencers>());
+    var viewModel = new IssueLicenseViewModel(catalog, Substitute.For<ILicenseService>(), partyService, ViewModelTestHelpers.CreateMockSequencers());
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Load);
 
@@ -138,7 +138,7 @@ public sealed class LicensesViewModelTests
       Substitute.For<ILicenseCatalog>(),
       Substitute.For<ILicenseService>(),
       Substitute.For<IPartyService>(),
-      Substitute.For<ISequencers>());
+      ViewModelTestHelpers.CreateMockSequencers());
     var changes = ViewModelTestHelpers.ObserveProperties(viewModel);
 
     viewModel.SelectedDescriptor = CreateDescriptor(kind, kind, kind);
@@ -275,7 +275,7 @@ public sealed class LicensesViewModelTests
     partyService.ListAsync(null, Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<PartySummary>>([licensor, licensee]));
     licenseService = Substitute.For<ILicenseService>();
-    return new IssueLicenseViewModel(catalog, licenseService, partyService, Substitute.For<ISequencers>());
+    return new IssueLicenseViewModel(catalog, licenseService, partyService, ViewModelTestHelpers.CreateMockSequencers());
   }
 
   private static LicenseDescriptorSummary CreateDescriptor(string discriminator, string name, string entitlementKind)
