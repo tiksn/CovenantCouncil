@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using CovenantCouncil.UseCases.Abstractions;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Settings;
 
@@ -42,9 +43,9 @@ public sealed class DatabaseGateViewModel : ViewModelBase
 
   public IReadOnlyList<string> RecentDatabasePaths { get; private set; } = [];
 
-  public ReactiveCommand<Unit, Unit> OpenOrCreateDatabase { get; }
+  public ReactiveCommand<RxVoid, RxVoid> OpenOrCreateDatabase { get; }
 
-  public ReactiveCommand<Unit, Unit> LoadRecent { get; }
+  public ReactiveCommand<RxVoid, RxVoid> LoadRecent { get; }
 
   private async Task LoadRecentAsync()
   {

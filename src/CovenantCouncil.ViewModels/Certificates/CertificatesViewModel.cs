@@ -2,6 +2,7 @@
 using System.Reactive;
 using CovenantCouncil.UseCases.Certificates;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Certificates;
 
@@ -22,11 +23,11 @@ public sealed class CertificatesViewModel : ViewModelBase
 
   public ObservableCollection<CertificateTreeNode> Roots { get; } = [];
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<IReadOnlyList<string>, Unit> ImportChain { get; }
+  public ReactiveCommand<IReadOnlyList<string>, RxVoid> ImportChain { get; }
 
-  public ReactiveCommand<Guid, Unit> Delete { get; }
+  public ReactiveCommand<Guid, RxVoid> Delete { get; }
 
   private async Task LoadAsync()
   {

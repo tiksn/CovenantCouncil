@@ -2,6 +2,7 @@
 using System.Reactive;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Parties;
 
@@ -29,17 +30,20 @@ public sealed class PartiesViewModel : ViewModelBase
     set
     {
       this.RaiseAndSetIfChanged(ref _selectedKind, value);
-      _ = Load.Execute().Subscribe(_ => { }, HandleException);
+      System.ObservableExtensions.Subscribe(
+      Load.Execute(),
+      _ => { },
+      HandleException);
     }
   }
 
   public IReadOnlyList<PartyKind?> KindFilters { get; } = [null, PartyKind.Individual, PartyKind.Organization];
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<UpsertParty, Unit> Save { get; }
+  public ReactiveCommand<UpsertParty, RxVoid> Save { get; }
 
-  public ReactiveCommand<Guid, Unit> Delete { get; }
+  public ReactiveCommand<Guid, RxVoid> Delete { get; }
 
   private async Task LoadAsync()
   {

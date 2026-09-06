@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Parties;
 
@@ -82,7 +83,7 @@ public sealed class AddPartyViewModel : ViewModelBase
     set => this.RaiseAndSetIfChanged(ref _longName, value);
   }
 
-  public ReactiveCommand<Unit, Unit> Save { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Save { get; }
 
   private async Task SaveAsync()
   {

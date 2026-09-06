@@ -2,6 +2,7 @@
 using System.Reactive;
 using CovenantCouncil.UseCases.Licenses;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Licenses;
 
@@ -54,15 +55,15 @@ public sealed class LicensesViewModel : ViewModelBase
     }
   }
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<IssueLicenseRequest, Unit> Issue { get; }
+  public ReactiveCommand<IssueLicenseRequest, RxVoid> Issue { get; }
 
-  public ReactiveCommand<(Guid Id, string Path), Unit> Export { get; }
+  public ReactiveCommand<(Guid Id, string Path), RxVoid> Export { get; }
 
-  public ReactiveCommand<string, Unit> Import { get; }
+  public ReactiveCommand<string, RxVoid> Import { get; }
 
-  public ReactiveCommand<Guid, Unit> Delete { get; }
+  public ReactiveCommand<Guid, RxVoid> Delete { get; }
 
   private async Task LoadAsync()
   {

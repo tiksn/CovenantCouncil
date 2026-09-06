@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using CovenantCouncil.UseCases.Settings;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Settings;
 
@@ -26,9 +27,9 @@ public sealed class ApplicationSettingsViewModel : ViewModelBase
 
   public IReadOnlyList<string> RecentDatabasePaths { get; private set; } = [];
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<Unit, Unit> Save { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Save { get; }
 
   private async Task LoadAsync()
   {

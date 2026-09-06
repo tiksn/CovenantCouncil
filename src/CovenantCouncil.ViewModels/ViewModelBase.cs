@@ -1,5 +1,8 @@
 ﻿using System.Reactive.Linq;
 using ReactiveUI;
+using ReactiveUI.Primitives;
+using ReactiveUI.Primitives.Concurrency;
+using ReactiveUI.Primitives.Extensions;
 
 namespace CovenantCouncil.ViewModels;
 
@@ -23,12 +26,12 @@ public abstract class ViewModelBase : ReactiveObject
 
   protected void ObserveCommandErrors<TInput, TOutput>(ReactiveCommand<TInput, TOutput> command)
   {
-    _ = command.ThrownExceptions
-      .ObserveOn(RxSchedulers.MainThreadScheduler)
-      .Subscribe(HandleException);
-    _ = command.IsExecuting
-      .ObserveOn(RxSchedulers.MainThreadScheduler)
-      .Subscribe(isExecuting =>
+    System.ObservableExtensions.Subscribe(
+      command.ThrownExceptions.ObserveOn(RxSchedulers.MainThreadScheduler),
+      HandleException);
+    System.ObservableExtensions.Subscribe(
+      command.IsExecuting.ObserveOn(RxSchedulers.MainThreadScheduler),
+      isExecuting =>
     {
       if (isExecuting)
       {

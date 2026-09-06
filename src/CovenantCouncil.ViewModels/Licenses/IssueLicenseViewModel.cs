@@ -4,6 +4,7 @@ using System.Reactive;
 using CovenantCouncil.UseCases.Licenses;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace CovenantCouncil.ViewModels.Licenses;
 
@@ -49,9 +50,9 @@ public sealed class IssueLicenseViewModel : ViewModelBase
 
   public ObservableCollection<PartySummary> Parties { get; } = [];
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<Unit, Unit> Issue { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Issue { get; }
 
   public string SerialNumber { get; } = Ulid.NewUlid().ToString();
 

@@ -1,6 +1,7 @@
 ﻿using System.Reactive;
 using CovenantCouncil.ViewModels;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using Shouldly;
 using Xunit;
 
@@ -67,7 +68,7 @@ public sealed class ViewModelBaseTests
       ObserveCommandErrors(Fail);
     }
 
-    public ReactiveCommand<Unit, Unit> Fail { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Fail { get; }
   }
 }
 
