@@ -4,6 +4,7 @@ using Microsoft.Reactive.Testing;
 using ReactiveUI;
 using ReactiveUI.Primitives;
 using ReactiveUI.Testing;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.FunctionalTests.ViewModels;
 

@@ -3,6 +3,7 @@ using CovenantCouncil.UseCases.Settings;
 using CovenantCouncil.ViewModels.Settings;
 using NSubstitute;
 using Shouldly;
+using TIKSN.Concurrency;
 using Xunit;
 
 namespace CovenantCouncil.FunctionalTests.ViewModels;
@@ -18,7 +19,7 @@ public sealed class SettingsViewModelTests
   {
     var databaseSession = Substitute.For<IDatabaseSessionService>();
     var recentDatabases = Substitute.For<IRecentDatabaseService>();
-    var viewModel = new DatabaseGateViewModel(databaseSession, recentDatabases)
+    var viewModel = new DatabaseGateViewModel(databaseSession, recentDatabases, Substitute.For<ISequencers>())
     {
       DatabasePath = "C:\\data\\council.ccdb",
       Password = "password",
@@ -48,7 +49,7 @@ public sealed class SettingsViewModelTests
     var recentDatabases = Substitute.For<IRecentDatabaseService>();
     recentDatabases.GetRecentAsync(Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<string>>(["one.ccdb", "two.ccdb"]));
-    var viewModel = new DatabaseGateViewModel(databaseSession, recentDatabases);
+    var viewModel = new DatabaseGateViewModel(databaseSession, recentDatabases, Substitute.For<ISequencers>());
     var changes = ViewModelTestHelpers.ObserveProperties(viewModel);
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.LoadRecent);
@@ -63,7 +64,7 @@ public sealed class SettingsViewModelTests
     var databaseSession = Substitute.For<IDatabaseSessionService>();
     databaseSession.OpenAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException(new InvalidOperationException("open failed")));
-    var viewModel = new DatabaseGateViewModel(databaseSession, Substitute.For<IRecentDatabaseService>())
+    var viewModel = new DatabaseGateViewModel(databaseSession, Substitute.For<IRecentDatabaseService>(), Substitute.For<ISequencers>())
     {
       SelectionMode = DatabaseSelectionMode.Open
     };
@@ -82,7 +83,7 @@ public sealed class SettingsViewModelTests
     var settingsService = Substitute.For<IApplicationSettingsService>();
     settingsService.GetAsync(Arg.Any<CancellationToken>())
       .Returns(Task.FromResult(new ApplicationSettings("http://otel.example", ["a.ccdb", "b.ccdb"])));
-    var viewModel = new ApplicationSettingsViewModel(settingsService);
+    var viewModel = new ApplicationSettingsViewModel(settingsService, Substitute.For<ISequencers>());
     var changes = ViewModelTestHelpers.ObserveProperties(viewModel);
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Load);
@@ -108,7 +109,7 @@ public sealed class SettingsViewModelTests
     var settingsService = Substitute.For<IApplicationSettingsService>();
     settingsService.GetAsync(Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException<ApplicationSettings>(new InvalidOperationException("settings failed")));
-    var viewModel = new ApplicationSettingsViewModel(settingsService);
+    var viewModel = new ApplicationSettingsViewModel(settingsService, Substitute.For<ISequencers>());
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Load);
 

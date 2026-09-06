@@ -1,8 +1,10 @@
 ﻿using System.Reactive;
 using CovenantCouncil.ViewModels;
+using NSubstitute;
 using ReactiveUI;
 using ReactiveUI.Primitives;
 using Shouldly;
+using TIKSN.Concurrency;
 using Xunit;
 
 namespace CovenantCouncil.FunctionalTests.ViewModels;
@@ -60,7 +62,7 @@ public sealed class ViewModelBaseTests
 
   private sealed class TestViewModel : ViewModelBase
   {
-    public TestViewModel()
+    public TestViewModel() : base(Substitute.For<ISequencers>())
     {
       Fail = ReactiveCommand.CreateFromTask(
         () => Task.FromException(new InvalidOperationException("command failed")),

@@ -3,6 +3,7 @@ using System.Reactive;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Parties;
 
@@ -11,12 +12,12 @@ public sealed class PartiesViewModel : ViewModelBase
   private readonly IPartyService _partyService;
   private PartyKind? _selectedKind;
 
-  public PartiesViewModel(IPartyService partyService)
+  public PartiesViewModel(IPartyService partyService, ISequencers sequencers) : base(sequencers)
   {
     _partyService = partyService;
-    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Save = ReactiveCommand.CreateFromTask<UpsertParty>(SaveAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Save = ReactiveCommand.CreateFromTask<UpsertParty>(SaveAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(Load);
     ObserveCommandErrors(Save);
     ObserveCommandErrors(Delete);

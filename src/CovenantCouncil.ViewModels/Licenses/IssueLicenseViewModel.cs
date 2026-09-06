@@ -5,6 +5,7 @@ using CovenantCouncil.UseCases.Licenses;
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Licenses;
 
@@ -33,13 +34,14 @@ public sealed class IssueLicenseViewModel : ViewModelBase
   public IssueLicenseViewModel(
     ILicenseCatalog licenseCatalog,
     ILicenseService licenseService,
-    IPartyService partyService)
+    IPartyService partyService,
+    ISequencers sequencers) : base(sequencers)
   {
     _licenseCatalog = licenseCatalog;
     _licenseService = licenseService;
     _partyService = partyService;
-    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Issue = ReactiveCommand.CreateFromTask(IssueAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Issue = ReactiveCommand.CreateFromTask(IssueAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(Load);
     ObserveCommandErrors(Issue);
   }

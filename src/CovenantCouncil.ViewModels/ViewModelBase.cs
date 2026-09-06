@@ -3,11 +3,14 @@ using ReactiveUI;
 using ReactiveUI.Primitives;
 using ReactiveUI.Primitives.Concurrency;
 using ReactiveUI.Primitives.Extensions;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels;
 
-public abstract class ViewModelBase : ReactiveObject
+public abstract class ViewModelBase(ISequencers sequencers) : ReactiveObject
 {
+  protected ISequencers Sequencers { get; } = sequencers;
+
   private int _busyOperationCount;
   private string? _errorMessage;
   private bool _isBusy;
@@ -27,10 +30,10 @@ public abstract class ViewModelBase : ReactiveObject
   protected void ObserveCommandErrors<TInput, TOutput>(ReactiveCommand<TInput, TOutput> command)
   {
     System.ObservableExtensions.Subscribe(
-      command.ThrownExceptions.ObserveOn(RxSchedulers.MainThreadScheduler),
+      command.ThrownExceptions.ObserveOn(Sequencers.MainThreadSequencer),
       HandleException);
     System.ObservableExtensions.Subscribe(
-      command.IsExecuting.ObserveOn(RxSchedulers.MainThreadScheduler),
+      command.IsExecuting.ObserveOn(Sequencers.MainThreadSequencer),
       isExecuting =>
     {
       if (isExecuting)

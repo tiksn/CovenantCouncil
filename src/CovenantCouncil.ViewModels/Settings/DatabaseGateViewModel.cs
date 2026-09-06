@@ -2,6 +2,7 @@
 using CovenantCouncil.UseCases.Abstractions;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Settings;
 
@@ -13,12 +14,12 @@ public sealed class DatabaseGateViewModel : ViewModelBase
   private string _password = "";
   private DatabaseSelectionMode _selectionMode = DatabaseSelectionMode.OpenOrCreate;
 
-  public DatabaseGateViewModel(IDatabaseSessionService databaseSessionService, IRecentDatabaseService recentDatabaseService)
+  public DatabaseGateViewModel(IDatabaseSessionService databaseSessionService, IRecentDatabaseService recentDatabaseService, ISequencers sequencers) : base(sequencers)
   {
     _databaseSessionService = databaseSessionService;
     _recentDatabaseService = recentDatabaseService;
-    OpenOrCreateDatabase = ReactiveCommand.CreateFromTask(OpenOrCreateDatabaseAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    LoadRecent = ReactiveCommand.CreateFromTask(LoadRecentAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    OpenOrCreateDatabase = ReactiveCommand.CreateFromTask(OpenOrCreateDatabaseAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    LoadRecent = ReactiveCommand.CreateFromTask(LoadRecentAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(OpenOrCreateDatabase);
     ObserveCommandErrors(LoadRecent);
   }

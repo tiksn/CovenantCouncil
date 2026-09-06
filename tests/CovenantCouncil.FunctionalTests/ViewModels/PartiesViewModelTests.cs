@@ -2,6 +2,7 @@
 using CovenantCouncil.ViewModels.Parties;
 using NSubstitute;
 using Shouldly;
+using TIKSN.Concurrency;
 using Xunit;
 
 namespace CovenantCouncil.FunctionalTests.ViewModels;
@@ -12,7 +13,7 @@ public sealed class PartiesViewModelTests
   [Fact]
   public void AddParty_KindSetter_UpdatesDerivedVisibilityAndRaisesNotifications()
   {
-    var viewModel = new AddPartyViewModel(Substitute.For<IPartyService>());
+    var viewModel = new AddPartyViewModel(Substitute.For<IPartyService>(), Substitute.For<ISequencers>());
     var changes = ViewModelTestHelpers.ObserveProperties(viewModel);
 
     viewModel.Kind = PartyKind.Organization;
@@ -43,7 +44,7 @@ public sealed class PartiesViewModelTests
   public async Task AddParty_Save_SendsAllPublicFields()
   {
     var partyService = Substitute.For<IPartyService>();
-    var viewModel = new AddPartyViewModel(partyService)
+    var viewModel = new AddPartyViewModel(partyService, Substitute.For<ISequencers>())
     {
       Kind = PartyKind.Organization,
       Email = "mail@example.com",
@@ -77,7 +78,7 @@ public sealed class PartiesViewModelTests
     var partyService = Substitute.For<IPartyService>();
     partyService.SaveAsync(Arg.Any<UpsertParty>(), Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException<Guid>(new InvalidOperationException("save failed")));
-    var viewModel = new AddPartyViewModel(partyService);
+    var viewModel = new AddPartyViewModel(partyService, Substitute.For<ISequencers>());
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Save);
 
@@ -92,7 +93,7 @@ public sealed class PartiesViewModelTests
     var individual = CreateParty(PartyKind.Individual, "Ada");
     partyService.ListAsync(PartyKind.Individual, Arg.Any<CancellationToken>())
       .Returns(Task.FromResult<IReadOnlyList<PartySummary>>([individual]));
-    var viewModel = new PartiesViewModel(partyService);
+    var viewModel = new PartiesViewModel(partyService, Substitute.For<ISequencers>());
     var collectionChanges = ViewModelTestHelpers.ObserveCollection(viewModel.Parties);
 
     viewModel.SelectedKind = PartyKind.Individual;
@@ -113,7 +114,7 @@ public sealed class PartiesViewModelTests
       .Returns(
         Task.FromResult<IReadOnlyList<PartySummary>>([party]),
         Task.FromResult<IReadOnlyList<PartySummary>>([]));
-    var viewModel = new PartiesViewModel(partyService);
+    var viewModel = new PartiesViewModel(partyService, Substitute.For<ISequencers>());
     var upsert = new UpsertParty(null, PartyKind.Organization, "e", "w", null, null, null, "s", "l");
 
     await ViewModelTestHelpers.ExecuteAsync(viewModel.Save, upsert);
@@ -132,7 +133,7 @@ public sealed class PartiesViewModelTests
     var partyService = Substitute.For<IPartyService>();
     partyService.DeleteAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
       .Returns(_ => Task.FromException(new InvalidOperationException("delete failed")));
-    var viewModel = new PartiesViewModel(partyService);
+    var viewModel = new PartiesViewModel(partyService, Substitute.For<ISequencers>());
 
     await ViewModelTestHelpers.ExecuteIgnoringCommandExceptionAsync(viewModel.Delete, Guid.NewGuid());
 

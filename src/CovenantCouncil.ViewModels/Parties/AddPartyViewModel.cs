@@ -2,6 +2,7 @@
 using CovenantCouncil.UseCases.Parties;
 using ReactiveUI;
 using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Parties;
 
@@ -17,10 +18,10 @@ public sealed class AddPartyViewModel : ViewModelBase
   private string? _shortName;
   private string? _website;
 
-  public AddPartyViewModel(IPartyService partyService)
+  public AddPartyViewModel(IPartyService partyService, ISequencers sequencers) : base(sequencers)
   {
     _partyService = partyService;
-    Save = ReactiveCommand.CreateFromTask(SaveAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Save = ReactiveCommand.CreateFromTask(SaveAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(Save);
   }
 
