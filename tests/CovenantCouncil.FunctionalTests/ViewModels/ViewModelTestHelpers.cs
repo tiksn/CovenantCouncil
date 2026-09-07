@@ -1,32 +1,36 @@
 ﻿using System.Collections.Specialized;
 using System.Reactive;
-using System.Reactive.Threading.Tasks;
 using Microsoft.Reactive.Testing;
+using NSubstitute;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.Testing;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.FunctionalTests.ViewModels;
 
 internal static class ViewModelTestHelpers
 {
-  public static async Task WithTestSchedulerAsync(Func<Task> test)
+  public static ISequencers CreateMockSequencers()
   {
-    await new TestScheduler()
-      .With(_ => test())
-      .WaitAsync(TimeSpan.FromSeconds(5));
+    var sequencers = Substitute.For<ISequencers>();
+    sequencers.MainThreadSequencer.Returns(ReactiveUI.Primitives.Concurrency.Sequencer.Immediate);
+    sequencers.TaskPoolSequencer.Returns(ReactiveUI.Primitives.Concurrency.Sequencer.Immediate);
+    return sequencers;
   }
 
-  public static Task ExecuteAsync(ReactiveCommand<Unit, Unit> command)
+
+  public static Task ExecuteAsync(ReactiveCommand<RxVoid, RxVoid> command)
   {
     return command.Execute().ToTask().WaitAsync(TimeSpan.FromSeconds(5));
   }
 
-  public static Task ExecuteAsync<TInput>(ReactiveCommand<TInput, Unit> command, TInput input)
+  public static Task ExecuteAsync<TInput>(ReactiveCommand<TInput, RxVoid> command, TInput input)
   {
     return command.Execute(input).ToTask().WaitAsync(TimeSpan.FromSeconds(5));
   }
 
-  public static async Task ExecuteIgnoringCommandExceptionAsync(ReactiveCommand<Unit, Unit> command)
+  public static async Task ExecuteIgnoringCommandExceptionAsync(ReactiveCommand<RxVoid, RxVoid> command)
   {
     try
     {
@@ -38,7 +42,7 @@ internal static class ViewModelTestHelpers
     }
   }
 
-  public static async Task ExecuteIgnoringCommandExceptionAsync<TInput>(ReactiveCommand<TInput, Unit> command, TInput input)
+  public static async Task ExecuteIgnoringCommandExceptionAsync<TInput>(ReactiveCommand<TInput, RxVoid> command, TInput input)
   {
     try
     {

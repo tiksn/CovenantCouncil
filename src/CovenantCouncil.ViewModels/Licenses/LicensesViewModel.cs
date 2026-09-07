@@ -2,6 +2,8 @@
 using System.Reactive;
 using CovenantCouncil.UseCases.Licenses;
 using ReactiveUI;
+using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Licenses;
 
@@ -12,15 +14,15 @@ public sealed class LicensesViewModel : ViewModelBase
   private bool _isLoading;
   private LicenseDescriptorSummary? _selectedDescriptor;
 
-  public LicensesViewModel(ILicenseCatalog licenseCatalog, ILicenseService licenseService)
+  public LicensesViewModel(ILicenseCatalog licenseCatalog, ILicenseService licenseService, ISequencers sequencers) : base(sequencers)
   {
     _licenseCatalog = licenseCatalog;
     _licenseService = licenseService;
-    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Issue = ReactiveCommand.CreateFromTask<IssueLicenseRequest>(IssueAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Export = ReactiveCommand.CreateFromTask<(Guid Id, string Path)>(request => _licenseService.ExportAsync(request.Id, request.Path), outputScheduler: RxSchedulers.MainThreadScheduler);
-    Import = ReactiveCommand.CreateFromTask<string>(_licenseService.ImportAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Issue = ReactiveCommand.CreateFromTask<IssueLicenseRequest>(IssueAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Export = ReactiveCommand.CreateFromTask<(Guid Id, string Path)>(request => _licenseService.ExportAsync(request.Id, request.Path), outputScheduler: Sequencers.MainThreadSequencer);
+    Import = ReactiveCommand.CreateFromTask<string>(_licenseService.ImportAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(Load);
     ObserveCommandErrors(Issue);
     ObserveCommandErrors(Export);
@@ -54,15 +56,15 @@ public sealed class LicensesViewModel : ViewModelBase
     }
   }
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<IssueLicenseRequest, Unit> Issue { get; }
+  public ReactiveCommand<IssueLicenseRequest, RxVoid> Issue { get; }
 
-  public ReactiveCommand<(Guid Id, string Path), Unit> Export { get; }
+  public ReactiveCommand<(Guid Id, string Path), RxVoid> Export { get; }
 
-  public ReactiveCommand<string, Unit> Import { get; }
+  public ReactiveCommand<string, RxVoid> Import { get; }
 
-  public ReactiveCommand<Guid, Unit> Delete { get; }
+  public ReactiveCommand<Guid, RxVoid> Delete { get; }
 
   private async Task LoadAsync()
   {

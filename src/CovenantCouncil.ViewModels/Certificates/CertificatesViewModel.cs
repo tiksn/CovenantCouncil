@@ -2,6 +2,8 @@
 using System.Reactive;
 using CovenantCouncil.UseCases.Certificates;
 using ReactiveUI;
+using ReactiveUI.Primitives;
+using TIKSN.Concurrency;
 
 namespace CovenantCouncil.ViewModels.Certificates;
 
@@ -9,12 +11,12 @@ public sealed class CertificatesViewModel : ViewModelBase
 {
   private readonly ICertificateService _certificateService;
 
-  public CertificatesViewModel(ICertificateService certificateService)
+  public CertificatesViewModel(ICertificateService certificateService, ISequencers sequencers) : base(sequencers)
   {
     _certificateService = certificateService;
-    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    ImportChain = ReactiveCommand.CreateFromTask<IReadOnlyList<string>>(ImportChainAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
-    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: RxSchedulers.MainThreadScheduler);
+    Load = ReactiveCommand.CreateFromTask(LoadAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    ImportChain = ReactiveCommand.CreateFromTask<IReadOnlyList<string>>(ImportChainAsync, outputScheduler: Sequencers.MainThreadSequencer);
+    Delete = ReactiveCommand.CreateFromTask<Guid>(DeleteAsync, outputScheduler: Sequencers.MainThreadSequencer);
     ObserveCommandErrors(Load);
     ObserveCommandErrors(ImportChain);
     ObserveCommandErrors(Delete);
@@ -22,11 +24,11 @@ public sealed class CertificatesViewModel : ViewModelBase
 
   public ObservableCollection<CertificateTreeNode> Roots { get; } = [];
 
-  public ReactiveCommand<Unit, Unit> Load { get; }
+  public ReactiveCommand<RxVoid, RxVoid> Load { get; }
 
-  public ReactiveCommand<IReadOnlyList<string>, Unit> ImportChain { get; }
+  public ReactiveCommand<IReadOnlyList<string>, RxVoid> ImportChain { get; }
 
-  public ReactiveCommand<Guid, Unit> Delete { get; }
+  public ReactiveCommand<Guid, RxVoid> Delete { get; }
 
   private async Task LoadAsync()
   {
