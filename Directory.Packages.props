@@ -12,7 +12,7 @@
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="ReactiveUI" Version="24.2.0" />
     <PackageVersion Include="ReactiveUI.Maui" Version="24.2.0" />
