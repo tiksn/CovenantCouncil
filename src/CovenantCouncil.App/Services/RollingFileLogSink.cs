@@ -74,7 +74,7 @@ public sealed partial class RollingFileLogSink : IDisposable
     lock (_gate)
     {
       Flush();
-      return [.. Directory.EnumerateFiles(_logDirectory, "covenant-council-*.log")
+      return Directory.EnumerateFiles(_logDirectory, "covenant-council-*.log")
         .OrderByDescending(File.GetLastWriteTimeUtc)
         .Take(MaxFiles)
         .SelectMany(path => ReadLines(path)
@@ -85,7 +85,8 @@ public sealed partial class RollingFileLogSink : IDisposable
               line.Contains("Unhandled exception", StringComparison.OrdinalIgnoreCase) ||
               line.Contains("Unhandled WinUI exception", StringComparison.OrdinalIgnoreCase) ||
               line.Contains("Unhandled AppDomain exception", StringComparison.OrdinalIgnoreCase)))
-          .Select(line => $"{Path.GetFileName(path)}: {line}"))];
+          .Select(line => $"{Path.GetFileName(path)}: {line}"))
+        .ToArray();
     }
   }
 

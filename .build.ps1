@@ -202,7 +202,7 @@ Task BuildWindowsApp EstimateVersion, {
     $nextVersion = $state.NextVersion
     $outputFolder = $state.WindowsBuildArtifactsFolder
 
-    Exec { dotnet publish $project --framework net10.0-windows10.0.19041.0 /p:Configuration=Release /p:Version=$nextVersion /p:WindowsPackageType=None /p:PublishDir=$outputFolder }
+    Exec { dotnet publish $project --framework net11.0-windows10.0.19041.0 /p:Configuration=Release /p:Version=$nextVersion /p:WindowsPackageType=None /p:PublishDir=$outputFolder }
 }
 
 # Synopsis: Build
