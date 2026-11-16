@@ -7,6 +7,7 @@ using CovenantCouncil.ViewModels.Certificates;
 using CovenantCouncil.ViewModels.Licenses;
 using CovenantCouncil.ViewModels.Parties;
 using CovenantCouncil.ViewModels.Settings;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -22,6 +23,7 @@ public static class MauiProgram
     var builder = MauiApp.CreateBuilder();
     builder
       .UseMauiApp<App>()
+      .UseMauiCommunityToolkit()
       .UseReactiveUI(reactiveUI => reactiveUI.WithMainThreadScheduler(
         MauiReactiveUIBuilderExtensions.MauiMainThreadScheduler,
         setRxApp: true))

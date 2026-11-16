@@ -9,10 +9,10 @@ public sealed partial class DatabaseFilePicker : IDatabaseFilePicker
       PickerTitle = "Pick Covenant Council database",
       FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
       {
-        [DevicePlatform.WinUI] = [".ccdb"],
-        [DevicePlatform.MacCatalyst] = ["ccdb"],
-        [DevicePlatform.iOS] = ["public.data"],
-        [DevicePlatform.Android] = ["application/octet-stream"]
+        [DevicePlatform.WinUI] = new[] { ".ccdb" },
+        [DevicePlatform.MacCatalyst] = new[] { "ccdb" },
+        [DevicePlatform.iOS] = new[] { "public.data" },
+        [DevicePlatform.Android] = new[] { "application/octet-stream" }
       })
     });
 
