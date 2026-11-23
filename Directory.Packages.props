@@ -16,7 +16,7 @@
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="ReactiveUI" Version="27.0.1" />
     <PackageVersion Include="ReactiveUI.Maui" Version="27.0.1" />
-    <PackageVersion Include="ReactiveUI.Testing" Version="27.0.1" />
+    <PackageVersion Include="ReactiveUI.Testing" Version="28.0.0" />
     <PackageVersion Include="ReportGenerator" Version="5.5.12" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SharpCompress" Version="0.48.1" />
